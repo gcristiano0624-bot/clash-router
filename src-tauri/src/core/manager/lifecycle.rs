@@ -18,7 +18,27 @@ impl CoreManager {
         }
 
         match *self.get_running_mode() {
-            RunningMode::Service => self.start_core_by_service().await,
+            RunningMode::Service => match self.start_core_by_service().await {
+                Ok(()) => Ok(()),
+                Err(err) => {
+                    let tun_required = Config::verge().await.latest_arc().enable_tun_mode.unwrap_or(false);
+                    if tun_required {
+                        logging!(
+                            error,
+                            Type::Service,
+                            "service startup failed and TUN requires service mode: {err}"
+                        );
+                        Err(err)
+                    } else {
+                        logging!(
+                            warn,
+                            Type::Service,
+                            "service startup failed, falling back to sidecar mode: {err}"
+                        );
+                        self.start_core_by_sidecar().await
+                    }
+                }
+            },
             RunningMode::NotRunning | RunningMode::Sidecar => self.start_core_by_sidecar().await,
         }
     }

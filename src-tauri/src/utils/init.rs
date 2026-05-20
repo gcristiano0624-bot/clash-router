@@ -136,7 +136,6 @@ async fn init_dns_config() -> Result<()> {
         ("prefer-h3".into(), Value::Bool(false)),
         ("respect-rules".into(), Value::Bool(false)),
         ("use-hosts".into(), Value::Bool(false)),
-        ("use-system-hosts".into(), Value::Bool(false)),
         (
             "fake-ip-filter".into(),
             Value::Sequence(vec![

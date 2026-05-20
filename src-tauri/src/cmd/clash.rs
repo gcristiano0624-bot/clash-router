@@ -3,18 +3,17 @@ use crate::feat;
 use crate::utils::dirs;
 use crate::{
     cmd::StringifyErr as _,
-    config::{ClashInfo, Config},
+    config::{ClashInfo, Config, load_dns_config as load_normalized_dns_config},
     constants,
     core::{
         CoreManager, handle,
-        validate::{CoreConfigValidator, ValidationOutcome},
+        validate::ValidationOutcome,
     },
 };
 use clash_verge_logging::{Type, logging, logging_error};
 use compact_str::CompactString;
 use serde_yaml_ng::Mapping;
 use smartstring::alias::String;
-use tokio::fs;
 
 /// 复制Clash环境变量
 #[tauri::command]
@@ -143,35 +142,21 @@ pub async fn save_dns_config(dns_config: Mapping) -> CmdResult {
 #[tauri::command]
 pub async fn apply_dns_config(apply: bool) -> CmdResult {
     if apply {
-        // 读取DNS配置文件
         let dns_path = dirs::app_home_dir().stringify_err()?.join(constants::files::DNS_CONFIG);
-
         if !dns_path.exists() {
             logging!(warn, Type::Config, "DNS config file not found");
             return Err("DNS config file not found".into());
         }
 
-        let dns_yaml = fs::read_to_string(&dns_path).await.stringify_err_log(|e| {
-            logging!(error, Type::Config, "Failed to read DNS config: {e}");
+        let normalized = load_normalized_dns_config().await.stringify_err_log(|e| {
+            logging!(error, Type::Config, "Failed to normalize DNS config: {e}");
         })?;
 
-        // 解析DNS配置
-        let patch_config = serde_yaml_ng::from_str::<serde_yaml_ng::Mapping>(&dns_yaml).stringify_err_log(|e| {
-            logging!(error, Type::Config, "Failed to parse DNS config: {e}");
-        })?;
+        for warning in &normalized.warnings {
+            logging!(warn, Type::Config, "{warning}");
+        }
 
         logging!(info, Type::Config, "Applying DNS config from file");
-
-        // 创建包含DNS配置的patch
-        let mut patch = serde_yaml_ng::Mapping::new();
-        patch.insert("dns".into(), patch_config.into());
-
-        // 应用DNS配置到运行时配置
-        Config::runtime().await.edit_draft(|d| {
-            d.patch_config(&patch);
-        });
-
-        // 应用新配置
         CoreManager::global()
             .update_config_checked()
             .await
@@ -231,15 +216,20 @@ pub async fn get_dns_config_content() -> CmdResult<String> {
 pub async fn validate_dns_config() -> CmdResult<ValidationOutcome> {
     let app_dir = dirs::app_home_dir().stringify_err()?;
     let dns_path = app_dir.join(constants::files::DNS_CONFIG);
-    let dns_path_str = dns_path.to_str().unwrap_or_default();
 
     if !dns_path.exists() {
         return Ok(ValidationOutcome::invalid_from_message("DNS config file not found"));
     }
 
-    CoreConfigValidator::validate_config_file_outcome(dns_path_str, None)
+    load_normalized_dns_config()
         .await
-        .stringify_err()
+        .map(|normalized| {
+            for warning in &normalized.warnings {
+                logging!(warn, Type::Config, "{warning}");
+            }
+            ValidationOutcome::Valid
+        })
+        .map_err(|err| err.to_string().into())
 }
 
 #[tauri::command]
