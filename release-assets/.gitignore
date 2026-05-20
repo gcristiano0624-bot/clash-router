@@ -1,0 +1,6 @@
+*.app
+*.dmg
+*.tar.gz
+!.gitignore
+!clash-router-macos/
+!clash-router-macos/README.md
