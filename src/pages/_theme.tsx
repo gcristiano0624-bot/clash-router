@@ -3,15 +3,15 @@ const OS = getSystem()
 
 // default theme setting
 export const defaultTheme = {
-  primary_color: '#007AFF',
-  secondary_color: '#FC9B76',
-  primary_text: '#000000',
-  secondary_text: '#3C3C4399',
-  info_color: '#007AFF',
-  error_color: '#FF3B30',
-  warning_color: '#FF9500',
-  success_color: '#06943D',
-  background_color: '#F5F5F5',
+  primary_color: '#1677C8',
+  secondary_color: '#1FAF9A',
+  primary_text: '#0F172A',
+  secondary_text: '#5B6475',
+  info_color: '#1677C8',
+  error_color: '#D64545',
+  warning_color: '#D48B17',
+  success_color: '#178F62',
+  background_color: '#EFF3F8',
   font_family: `-apple-system, BlinkMacSystemFont,"Microsoft YaHei UI", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji"${
     OS === 'windows' ? ', twemoji mozilla' : ''
   }`,
@@ -20,13 +20,13 @@ export const defaultTheme = {
 // dark mode
 export const defaultDarkTheme = {
   ...defaultTheme,
-  primary_color: '#0A84FF',
-  secondary_color: '#FF9F0A',
+  primary_color: '#4BA3FF',
+  secondary_color: '#33C3B0',
   primary_text: '#FFFFFF',
-  background_color: '#2E303D',
-  secondary_text: '#EBEBF599',
-  info_color: '#0A84FF',
-  error_color: '#FF453A',
-  warning_color: '#FF9F0A',
-  success_color: '#30D158',
+  background_color: '#0E1724',
+  secondary_text: '#8B9BB4',
+  info_color: '#4BA3FF',
+  error_color: '#FF6363',
+  warning_color: '#F3B24B',
+  success_color: '#3DD598',
 }

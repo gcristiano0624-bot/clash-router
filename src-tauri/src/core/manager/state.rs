@@ -28,6 +28,13 @@ impl CoreManager {
         let config_file = Config::generate_file(crate::config::ConfigType::Run).await?;
         let app_handle = handle::Handle::app_handle();
         let clash_core = Config::verge().await.latest_arc().get_valid_clash_core();
+        let sidecar_path = dirs::ensure_current_exe_sibling_executable(clash_core.as_str())?;
+        logging!(
+            info,
+            Type::Core,
+            "Using sidecar binary at: {}",
+            dirs::path_to_str(&sidecar_path)?
+        );
         let config_dir = dirs::app_home_dir()?;
 
         #[cfg(unix)]

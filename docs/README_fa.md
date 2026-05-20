@@ -1,12 +1,12 @@
 <h1 align="center">
-  <img src="../src-tauri/icons/icon.png" alt="Clash" width="128" />
+  <img src="../src-tauri/icons/icon.png" alt="Clash Router" width="128" />
   <br>
-  Continuation of <a href="https://github.com/zzzgydi/clash-verge">Clash Verge</a>
+  Clash Router
   <br>
 </h1>
 
 <h3 align="center">
-  یک رابط کاربری گرافیکی Clash Meta که با <a href="https://github.com/tauri-apps/tauri">Tauri</a> ساخته شده است.
+یک کلاینت دسکتاپ برای مسیریابی و پروکسی بر پایه <a href="https://github.com/clash-verge-rev/clash-verge-rev">clash-verge-rev</a> که با <a href="https://github.com/tauri-apps/tauri">Tauri 2</a>، Rust و React ساخته شده است.
 </h3>
 
 <p align="center">
@@ -20,104 +20,45 @@
   <a href="./README_fa.md">فارسی</a>
 </p>
 
-## پیش‌نمایش
+## معرفی
 
-| تاریک                               | روشن                                  |
-| ----------------------------------- | ------------------------------------- |
-| ![Dark Preview](./preview_dark.png) | ![Light Preview](./preview_light.png) |
+`Clash Router` یک کلاینت فورک‌شده برای `mihomo` است که هویت مستقل برنامه، رابط کاربری تخت‌تر و اصلاحات پایداری را ارائه می‌کند.
 
 ## نصب
 
-برای دانلود فایل نصبی متناسب با پلتفرم خود، به [صفحه انتشار](https://github.com/clash-verge-rev/clash-verge-rev/releases) مراجعه کنید.<br> ما بسته‌هایی برای ویندوز (x64/x86)، لینوکس (x64/arm64) و macOS 10.15+ (اینتل/اپل) ارائه می‌دهیم.
+- مخزن: [gcristiano0624-bot/clash-router](https://github.com/gcristiano0624-bot/clash-router)
+- انتشارها: [Releases](https://github.com/gcristiano0624-bot/clash-router/releases)
+- مستندات پروژه: [Project.md](https://github.com/gcristiano0624-bot/clash-router/blob/main/docs/Project.md)
 
-#### انتخاب کانال انتشار
+خروجی‌های macOS نگه‌داری‌شده در مخزن:
 
-| Channel     | توضیحات                                                                                           | Link                                                                                   |
-| :---------- | :------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------- |
-| Stable      | ساخت رسمی با قابلیت اطمینان بالا، ایده‌آل برای استفاده روزانه.                                    | [Release](https://github.com/clash-verge-rev/clash-verge-rev/releases)                 |
-| Alpha (EOL) | نسخه‌های قدیمی (Legacy builds) برای اعتبارسنجی خط لوله انتشار (publish pipeline) استفاده می‌شوند. | [Alpha](https://github.com/clash-verge-rev/clash-verge-rev/releases/tag/alpha)         |
-| AutoBuild   | نسخه‌های آزمایشی برای آزمایش و دریافت بازخورد. منتظر تغییرات آزمایشی باشید.                       | [AutoBuild](https://github.com/clash-verge-rev/clash-verge-rev/releases/tag/autobuild) |
+- `release-assets/clash-router-macos/Clash Router.app`
+- `release-assets/clash-router-macos/Clash Router_2.5.1_aarch64.dmg`
+- `release-assets/clash-router-macos/Clash Router.app.tar.gz`
 
-#### راهنماهای نصب و سوالات متداول
+## کانال‌های انتشار
 
-برای مراحل نصب، عیب‌یابی و سوالات متداول، [مستندات پروژه](https://clash-verge-rev.github.io/) را مطالعه کنید.
-
-### کانال تلگرام
-
-برای اطلاع از آخرین اخبار به [@clash_verge_rev](https://t.me/clash_verge_re) بپیوندید.
-
----
-
-## تبلیغات
-
-#### [Doggygo VPN — شتاب‌دهنده جهانی عملکردگرا](https://verge.dginv.click/#/register?code=oaxsAGo6)
-
-- سرویس شبکه برون مرزی با عملکرد بالا به همراه دوره‌های آزمایشی رایگان، طرح‌های تخفیف‌دار، امکان باز کردن قفل استریم و پشتیبانی درجه یک از پروتکل هیستریا.
-- از طریق لینک اختصاصی Clash Verge ثبت نام کنید تا یک دوره آزمایشی ۳ روزه با ۱ گیگابایت ترافیک در روز دریافت کنید: [ثبت نام](https://verge.dginv.click/#/register?code=oaxsAGo6)
-- کوپن تخفیف ۲۰٪ ویژه کاربران Clash Verge: `verge20` (محدود به ۵۰۰ بار استفاده)
-- بسته تخفیف‌دار از ۱۵.۸ ین در ماه برای ۱۶۰ گیگابایت، به علاوه ۲۰٪ تخفیف اضافی برای صورتحساب سالانه
-- توسط یک تیم خارجی با خدمات قابل اعتماد و تا 50٪ سهم درآمد اداره می‌شود
-- کلاسترهای متعادل بار با مسیرهای اختصاصی پرسرعت (سازگار با کلاینت‌های قدیمی)، تأخیر فوق‌العاده کم، پخش روان 4K
-- اولین ارائه‌دهنده جهانی با **پروتکل QUIC**، اکنون با پروتکل‌های سریع‌تر خانواده QUIC (بهترین ترکیب با کلاینت Clash Verge)
-- پشتیبانی از سرویس‌های استریم و دسترسی به ChatGPT
-- وبسایت رسمی: [https://狗狗加速.com](https://verge.dginv.click/#/register?code=oaxsAGo6)
-
-### 🤖 [GPTKefu — پلتفرم خدمات مشتری هوشمند مبتنی بر هوش مصنوعی با ادغام عمیق Crisp](https://gptkefu.com)
-
-- 🧠 درک عمیق زمینه کامل مکالمه + تشخیص تصویر، ارائه خودکار پاسخ‌های حرفه‌ای و دقیق — بدون پاسخ‌های رباتیک.
-- ♾️ **بدون محدودیت در تعداد پاسخ‌ها**، بدون نگرانی از سهمیه — بر خلاف سایر محصولات خدمات مشتری AI که بر اساس هر پیام هزینه دریافت می‌کنند.
-- 💬 مشاوره پیش از فروش، پشتیبانی پس از فروش، پاسخ به سوالات پیچیده — پوشش تمام سناریوها با سهولت، با نمونه‌های واقعی تأیید شده.
-- ⚡ راه‌اندازی در ۳ دقیقه، بدون نیاز به آموزش — افزایش فوری بهره‌وری خدمات مشتری و رضایت مشتریان.
-- 🎁 ۱۴ روز آزمایش رایگان پلن پریمیوم — اول امتحان کنید، بعد پرداخت کنید: 👉 [شروع آزمایش رایگان](https://gptkefu.com)
-- 📢 کانال تلگرام خدمات مشتری هوشمند: [@crisp_ai](https://t.me/crisp_ai)
-
----
+| کانال | توضیح | لینک |
+| :--- | :--- | :--- |
+| Stable | کانال پایدار برای استفاده روزمره | [Releases](https://github.com/gcristiano0624-bot/clash-router/releases) |
+| Router Preview | اولین انتشار برندشده فورک با اصلاحات DNS | [v2.5.1-router.1](https://github.com/gcristiano0624-bot/clash-router/releases/tag/v2.5.1-router.1) |
 
 ## ویژگی‌ها
 
-- ساخته شده بر اساس Rust با کارایی بالا و فریم‌ورک Tauri 2
-- با هسته جاسازی‌شده [Clash.Meta (mihomo)](https://github.com/MetaCubeX/mihomo) ارائه می‌شود و از تغییر به کانال «آلفا» پشتیبانی می‌کند.
-- رابط کاربری تمیز و مرتب با کنترل‌های رنگ تم، آیکون‌های گروه/سینی پروکسی و `تزریق CSS`
-- مدیریت پروفایل پیشرفته (ادغام و کمک‌کننده‌های اسکریپت) با نکات مربوط به سینتکس پیکربندی
-- کنترل‌های پروکسی سیستم، حالت محافظت و پشتیبانی از `TUN` (آداپتور شبکه مجازی)
-- ویرایشگرهای بصری برای گره‌ها و قوانین
-- پشتیبان‌گیری و همگام‌سازی مبتنی بر WebDAV برای تنظیمات
-
-### سوالات متداول
-
-برای راهنمایی‌های مربوط به هر پلتفرم، به [صفحه سوالات متداول](https://clash-verge-rev.github.io/faq/windows.html) مراجعه کنید.
-
-### اهدا
-
-[پشتیبانی از توسعه Clash Verge Rev](https://github.com/sponsors/clash-verge-rev)
+- کلاینت دسکتاپ مبتنی بر Rust، Tauri 2 و React
+- هسته `mihomo` با دو حالت sidecar و service
+- اصلاحات DNS و بازیابی خودکار مجوز اجرایی در macOS
+- رابط کاربری تخت برای ناوبری، خانه، پروکسی و تنظیمات
 
 ## توسعه
 
-برای دستورالعمل‌های دقیق مشارکت، به [CONTRIBUTING.md](../CONTRIBUTING.md) مراجعه کنید.
-
-پس از نصب تمام پیش‌نیازهای **Tauri**، پوسته توسعه را با دستور زیر اجرا کنید:
-
-```shell
+```bash
 pnpm i
-pnpm run prebuild
+pnpm prebuild
 pnpm dev
 ```
 
-## مشارکت‌ها
-
-مشکلات و درخواست‌های pull مورد استقبال قرار می‌گیرند!
-
-## تقدیر و تشکر
-
-Clash Verge Rev بر اساس این پروژه‌ها ساخته شده یا از آنها الهام گرفته است:
-
-- [zzzgydi/clash-verge](https://github.com/zzzgydi/clash-verge): یک رابط کاربری گرافیکی Clash مبتنی بر Tauri برای ویندوز، macOS و لینوکس..
-- [tauri-apps/tauri](https://github.com/tauri-apps/tauri): ساخت برنامه‌های دسکتاپ کوچک‌تر، سریع‌تر و امن‌تر با رابط کاربری وب.
-- [Dreamacro/clash](https://github.com/Dreamacro/clash): یک تونل مبتنی بر قانون که با زبان Go نوشته شده است.
-- [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo): یک تونل مبتنی بر قانون که با زبان Go نوشته شده است.
-- [Fndroid/clash_for_windows_pkg](https://github.com/Fndroid/clash_for_windows_pkg): رابط کاربری گرافیکی Clash برای ویندوز و macOS.
-- [vitejs/vite](https://github.com/vitejs/vite): ابزارهای فرانت‌اند نسل بعدی با DX فوق‌العاده سریع.
-
 ## مجوز
 
-مجوز GPL-3.0. برای جزئیات بیشتر به [فایل مجوز](../LICENSE) مراجعه کنید.
+مجوز `GPL-3.0`. برای جزئیات بیشتر [LICENSE](../LICENSE) را ببینید.
+

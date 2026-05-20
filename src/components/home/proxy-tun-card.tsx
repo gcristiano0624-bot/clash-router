@@ -37,39 +37,28 @@ interface TabButtonProps {
 const TabButton: FC<TabButtonProps> = memo(
   ({ isActive, onClick, icon: Icon, label, hasIndicator = false }) => (
     <Paper
-      elevation={isActive ? 2 : 0}
+      elevation={0}
       onClick={onClick}
       sx={{
         cursor: 'pointer',
-        px: 2,
-        py: 1,
+        px: 1.5,
+        py: 0.9,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         gap: 1,
-        bgcolor: isActive ? 'primary.main' : 'background.paper',
-        color: isActive ? 'primary.contrastText' : 'text.primary',
-        borderRadius: 1.5,
+        bgcolor: isActive ? 'action.selected' : 'transparent',
+        color: isActive ? 'primary.main' : 'text.primary',
+        borderRadius: 3,
         flex: 1,
         maxWidth: 160,
         transition: 'all 0.2s ease-in-out',
         position: 'relative',
+        border: '1px solid',
+        borderColor: isActive ? 'primary.main' : 'divider',
         '&:hover': {
-          transform: 'translateY(-1px)',
-          boxShadow: 1,
+          bgcolor: 'action.hover',
         },
-        '&:after': isActive
-          ? {
-              content: '""',
-              position: 'absolute',
-              bottom: -9,
-              left: '50%',
-              width: 2,
-              height: 9,
-              bgcolor: 'primary.main',
-              transform: 'translateX(-50%)',
-            }
-          : {},
       }}
     >
       <Icon fontSize="small" />
@@ -82,7 +71,7 @@ const TabButton: FC<TabButtonProps> = memo(
             width: 8,
             height: 8,
             borderRadius: '50%',
-            bgcolor: isActive ? '#fff' : 'success.main',
+            bgcolor: isActive ? 'primary.main' : 'success.main',
             position: 'absolute',
             top: 8,
             right: 8,
@@ -110,11 +99,11 @@ const TabDescription: FC<TabDescriptionProps> = memo(
           textAlign: 'center',
           color: 'text.secondary',
           p: 0.8,
-          borderRadius: 1,
+          borderRadius: 2,
           borderColor: 'primary.main',
           borderWidth: 1,
           borderStyle: 'solid',
-          backgroundColor: 'background.paper',
+          backgroundColor: 'transparent',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -229,9 +218,10 @@ export const ProxyTunCard: FC = () => {
       <Box
         sx={{
           mt: 0,
-          p: 1,
+          p: 1.25,
           bgcolor: alpha(theme.palette.primary.main, 0.04),
-          borderRadius: 2,
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
+          borderRadius: 3,
         }}
       >
         <ProxyControlSwitches

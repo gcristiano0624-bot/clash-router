@@ -7,6 +7,7 @@ import {
   SpeedOutlined,
 } from '@mui/icons-material'
 import {
+  Chip,
   Box,
   Button,
   Checkbox,
@@ -34,6 +35,7 @@ import { HomeProfileCard } from '@/components/home/home-profile-card'
 import { ProxyTunCard } from '@/components/home/proxy-tun-card'
 import { useProfiles } from '@/hooks/use-profiles'
 import { useVerge } from '@/hooks/use-verge'
+import { useClashConfigData } from '@/providers/app-data-context'
 import { entry_lightweight_mode, openWebUrl } from '@/services/cmds'
 
 const LazyTestCard = lazy(() =>
@@ -212,6 +214,7 @@ const HomePage = () => {
   const { t } = useTranslation()
   const { verge } = useVerge()
   const { current, mutateProfiles } = useProfiles()
+  const { clashConfig } = useClashConfigData()
 
   // 设置弹窗的状态
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -263,7 +266,7 @@ const HomePage = () => {
 
   // 文档链接函数
   const toGithubDoc = useLockFn(() => {
-    return openWebUrl('https://clash-verge-rev.github.io/index.html')
+    return openWebUrl('https://github.com/gcristiano0624-bot/clash-router/blob/main/docs/Project.md')
   })
 
   // 新增：打开设置弹窗
@@ -362,10 +365,31 @@ const HomePage = () => {
     () => `${serializeCardFlags(effectiveHomeCards)}:${settingsOpen ? 1 : 0}`,
     [effectiveHomeCards, settingsOpen],
   )
+  const statusItems = useMemo(
+    () => [
+      {
+        label: t('profiles.page.title'),
+        value: current?.name || t('profiles.page.title'),
+      },
+      {
+        label: t('home.page.cards.proxyMode'),
+        value: (clashConfig?.mode || 'Rule').toString().toUpperCase(),
+      },
+      {
+        label: t('settings.sections.system.toggles.tunMode'),
+        value: verge?.enable_tun_mode ? 'ON' : 'OFF',
+      },
+      {
+        label: t('settings.sections.system.toggles.systemProxy'),
+        value: verge?.enable_system_proxy ? 'ON' : 'OFF',
+      },
+    ],
+    [clashConfig?.mode, current?.name, t, verge?.enable_system_proxy, verge?.enable_tun_mode],
+  )
   return (
     <BasePage
       title={t('home.page.title')}
-      contentStyle={{ padding: 2 }}
+      contentStyle={{ padding: 4 }}
       header={
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Tooltip title={t('home.page.tooltips.lightweightMode')} arrow>
@@ -390,6 +414,43 @@ const HomePage = () => {
         </Box>
       }
     >
+      <Box
+        sx={(theme) => ({
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+          gap: 1.5,
+          mb: 2,
+          p: 1.5,
+          borderRadius: 4,
+          border: `1px solid ${theme.palette.divider}`,
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? 'rgba(255,255,255,0.72)'
+              : 'rgba(19,32,51,0.82)',
+        })}
+      >
+        {statusItems.map((item) => (
+          <Box key={item.label} sx={{ minWidth: 0 }}>
+            <Chip
+              label={item.label}
+              size="small"
+              variant="outlined"
+              sx={{ mb: 1, backgroundColor: 'transparent' }}
+            />
+            <Box
+              sx={{
+                fontSize: 15,
+                fontWeight: 700,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {item.value}
+            </Box>
+          </Box>
+        ))}
+      </Box>
       <Grid container spacing={1.5} columns={{ xs: 6, sm: 6, md: 12 }}>
         {criticalCards}
 

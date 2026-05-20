@@ -284,6 +284,7 @@ const Layout = () => {
         style={{
           borderTopLeftRadius: '0px',
           borderTopRightRadius: '0px',
+          backgroundColor: 'var(--background-color)',
         }}
         onContextMenu={(e) => {
           if (
@@ -316,23 +317,30 @@ const Layout = () => {
               <div
                 data-tauri-drag-region="true"
                 style={{
-                  height: '27px',
+                  height: '32px',
                   display: 'flex',
                   justifyContent: 'space-between',
+                  width: '100%',
+                  alignItems: 'center',
                 }}
               >
                 <SvgIcon
                   component={isDark ? iconDark : iconLight}
                   style={{
-                    height: '36px',
-                    width: '36px',
-                    marginTop: '-3px',
-                    marginRight: '5px',
-                    marginLeft: '-3px',
+                    height: '40px',
+                    width: '40px',
+                    marginRight: '10px',
+                    marginLeft: '-2px',
                   }}
                   inheritViewBox
                 />
-                <LogoSvg fill={isDark ? 'white' : 'black'} />
+                <LogoSvg
+                  style={{
+                    flex: 1,
+                    height: '26px',
+                    color: isDark ? '#ffffff' : '#0f172a',
+                  }}
+                />
               </div>
               <UpdateButton className="the-newbtn" />
             </div>
@@ -343,17 +351,18 @@ const Layout = () => {
                   px: 1.5,
                   py: 0.75,
                   mx: 'auto',
-                  mb: 1,
+                  mb: 1.25,
                   maxWidth: 250,
-                  borderRadius: 1.5,
+                  borderRadius: 2.5,
                   fontSize: 12,
                   fontWeight: 600,
                   textAlign: 'center',
-                  color: theme.palette.warning.contrastText,
+                  border: `1px solid ${theme.palette.warning.main}`,
+                  color: theme.palette.warning.main,
                   bgcolor:
                     theme.palette.mode === 'light'
-                      ? theme.palette.warning.main
-                      : theme.palette.warning.dark,
+                      ? 'rgba(212, 139, 23, 0.08)'
+                      : 'rgba(243, 178, 75, 0.08)',
                 })}
               >
                 {t('layout.components.navigation.menu.reorderMode')}

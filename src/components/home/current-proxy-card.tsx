@@ -931,11 +931,11 @@ export const CurrentProxyCard = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              p: 1,
+              p: 1.25,
               mb: 2,
-              borderRadius: 1,
-              bgcolor: alpha(theme.palette.primary.main, 0.05),
-              border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+              borderRadius: 3,
+              bgcolor: alpha(theme.palette.primary.main, 0.04),
+              border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
             }}
           >
             <Box>

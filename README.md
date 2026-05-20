@@ -1,16 +1,16 @@
 <h1 align="center">
-  <img src="./src-tauri/icons/icon.png" alt="Clash" width="128" />
+  <img src="./src-tauri/icons/icon.png" alt="Clash Router" width="128" />
   <br>
-  Continuation of <a href="https://github.com/zzzgydi/clash-verge">Clash Verge</a>
+  Clash Router
   <br>
 </h1>
 
 <h3 align="center">
-A Clash Meta GUI based on <a href="https://github.com/tauri-apps/tauri">Tauri</a>.
+  基于 <a href="https://github.com/clash-verge-rev/clash-verge-rev">clash-verge-rev</a> 二次开发的路由与代理桌面客户端，采用 <a href="https://github.com/tauri-apps/tauri">Tauri 2</a>、Rust 与 React 构建。
 </h3>
 
 <p align="center">
-  Languages:
+  语言:
   <a href="./README.md">简体中文</a> ·
   <a href="./docs/README_en.md">English</a> ·
   <a href="./docs/README_es.md">Español</a> ·
@@ -20,108 +20,99 @@ A Clash Meta GUI based on <a href="https://github.com/tauri-apps/tauri">Tauri</a
   <a href="./docs/README_fa.md">فارسی</a>
 </p>
 
-## Preview
+## 项目定位
 
-| Dark                             | Light                             |
-| -------------------------------- | --------------------------------- |
+`Clash Router` 是一个面向个人设备与多网络环境的 `mihomo` 图形客户端。
+
+当前 fork 在上游 `clash-verge-rev` 基础上重点完成了这些工作：
+
+- 独立品牌化：应用名、Bundle ID、配置目录与打包身份已隔离
+- 稳定性修复：统一 DNS 配置应用路径，增加 service 失败时的 sidecar 回退
+- 兼容性修复：自动补齐 sidecar / service 可执行权限，避免 `Permission denied` 校验失败
+- 视觉升级：全局主题与核心页面切换为更扁平的路由控制台风格
+- 本地交付：已产出 macOS `.app`、`.dmg` 与更新归档
+
+## 预览
+
+| Dark | Light |
+| --- | --- |
 | ![预览](./docs/preview_dark.png) | ![预览](./docs/preview_light.png) |
 
-## Install
+## 安装
 
-请到发布页面下载对应的安装包：[Release page](https://github.com/clash-verge-rev/clash-verge-rev/releases)<br>
-Go to the [Release page](https://github.com/clash-verge-rev/clash-verge-rev/releases) to download the corresponding installation package<br>
-Supports Windows (x64/x86), Linux (x64/arm64) and macOS 11+ (intel/apple).
+请前往 fork 仓库的发布页下载适合你平台的安装包：
 
-#### 我应当怎样选择发行版
+- 仓库主页：[gcristiano0624-bot/clash-router](https://github.com/gcristiano0624-bot/clash-router)
+- 发布页：[Releases](https://github.com/gcristiano0624-bot/clash-router/releases)
 
-| 版本        | 特征                                     | 链接                                                                                   |
-| :---------- | :--------------------------------------- | :------------------------------------------------------------------------------------- |
-| Stable      | 正式版，高可靠性，适合日常使用。         | [Release](https://github.com/clash-verge-rev/clash-verge-rev/releases)                 |
-| Alpha(废弃) | 测试发布流程。                           | [Alpha](https://github.com/clash-verge-rev/clash-verge-rev/releases/tag/alpha)         |
-| AutoBuild   | 滚动更新版，适合测试反馈，可能存在缺陷。 | [AutoBuild](https://github.com/clash-verge-rev/clash-verge-rev/releases/tag/autobuild) |
+当前已整理的 macOS 产物也保存在仓库内：
 
-#### 安装说明和常见问题，请到 [文档页](https://clash-verge-rev.github.io/) 查看
+- `release-assets/clash-router-macos/Clash Router.app`
+- `release-assets/clash-router-macos/Clash Router_2.5.1_aarch64.dmg`
+- `release-assets/clash-router-macos/Clash Router.app.tar.gz`
 
-### TG 频道: [@clash_verge_rev](https://t.me/clash_verge_re)
+支持平台：
 
----
+- Windows `x64/x86`
+- Linux `x64/arm64`
+- macOS `11+` `Intel/Apple Silicon`
 
-## Promotion
+## 版本渠道
 
-### ✈️ [狗狗加速 —— 技术流机场 Doggygo VPN](https://verge.dginv.click/#/register?code=oaxsAGo6)
+| 渠道 | 说明 | 链接 |
+| :--- | :--- | :--- |
+| Stable | 面向日常使用的正式发布版本 | [Releases](https://github.com/gcristiano0624-bot/clash-router/releases) |
+| Router Preview | 用于验证品牌化与兼容性修复的 fork 版本 | [v2.5.1-router.1](https://github.com/gcristiano0624-bot/clash-router/releases/tag/v2.5.1-router.1) |
 
-🚀 高性能海外技术流机场，支持免费试用与优惠套餐，全面解锁流媒体及 AI 服务，全球首家采用 **QUIC 协议**。
+## 文档
 
-🎁 使用 **Clash Verge 专属邀请链接** 注册即送 **3 天免费试用**，每日 **1GB 流量**：👉 [点此注册](https://verge.dginv.click/#/register?code=oaxsAGo6)
+- 项目总览：[docs/Project.md](./docs/Project.md)
+- DNS / service 方案：[2026-05-20-clash-verge-dns-service-design.md](./docs/superpowers/specs/2026-05-20-clash-verge-dns-service-design.md)
+- 品牌与 UI 方案：[2026-05-20-clash-router-brand-design.md](./docs/superpowers/specs/2026-05-20-clash-router-brand-design.md)
+- 文档与多语言方案：[2026-05-20-clash-router-docs-i18n-design.md](./docs/superpowers/specs/2026-05-20-clash-router-docs-i18n-design.md)
 
-#### **核心优势：**
+## 主要特性
 
-- 📱 自研 iOS 客户端（业内"唯一"）技术经得起考验，极大**持续研发**投入
-- 🧑‍💻 **12小时真人客服**(顺带解决 Clash Verge 使用问题)
-- 💰 优惠套餐每月**仅需 21 元，160G 流量，年付 8 折**
-- 🌍 海外团队，无跑路风险，高达 50% 返佣
-- ⚙️ **集群负载均衡**设计，**负载监控和随时扩容**，高速专线(兼容老客户端)，极低延迟，无视晚高峰，4K 秒开
-- ⚡ 全球首家**Quic 协议机场**，现已上线更快的 Quic 类协议(Clash Verge 客户端最佳搭配)
-- 🎬 解锁**流媒体及 主流 AI**
+- 基于 `Rust`、`Tauri 2`、`React` 与 `TypeScript`
+- 内置 `mihomo` sidecar / service 双运行模式
+- 支持系统代理、守卫、`TUN`、配置增强、规则与代理编辑
+- 修复 DNS 热应用与配置生成不一致问题
+- 非 `TUN` 场景下支持 service 启动失败自动回退 sidecar
+- 自动补齐 sidecar 与 service 可执行权限，减少 macOS 首次运行故障
+- 扁平化主题、导航与核心页面视觉
 
-🌐 官网：👉 [https://狗狗加速.com](https://verge.dginv.click/#/register?code=oaxsAGo6)
+## 开发
 
-### 🤖 [GPTKefu —— 与 Crisp 深度整合的 AI 智能客服平台](https://gptkefu.com)
+安装依赖后执行：
 
-- 🧠 深度理解完整对话上下文 + 图片识别，自动给出专业、精准的回复，告别机械式客服。
-- ♾️ **不限回答数量**，无额度焦虑，区别于其他按条计费的 AI 客服产品。
-- 💬 售前咨询、售后服务、复杂问题解答，全场景轻松覆盖，真实用户案例已验证效果。
-- ⚡ 3 分钟极速接入，零门槛上手，即刻提升客服效率与客户满意度。
-- 🎁 高级套餐免费试用 14 天，先体验后付费：👉 [立即试用](https://gptkefu.com)
-- 📢 智能客服TG 频道：[@crisp_ai](https://t.me/crisp_ai)
-
----
-
-## Features
-
-- 基于性能强劲的 Rust 和 Tauri 2 框架
-- 内置[Clash.Meta(mihomo)](https://github.com/MetaCubeX/mihomo)内核，并支持切换 `Alpha` 版本内核。
-- 简洁美观的用户界面，支持自定义主题颜色、代理组/托盘图标以及 `CSS Injection`。
-- 配置文件管理和增强（Merge 和 Script），配置文件语法提示。
-- 系统代理和守卫、`TUN(虚拟网卡)` 模式。
-- 可视化节点和规则编辑
-- WebDav 配置备份和同步
-
-### FAQ
-
-Refer to [Doc FAQ Page](https://clash-verge-rev.github.io/faq/windows.html)
-
-### Donation
-
-[捐助Clash Verge Rev的开发](https://github.com/sponsors/clash-verge-rev)
-
-## Development
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.
-
-To run the development server, execute the following commands after all prerequisites for **Tauri** are installed:
-
-```shell
+```bash
 pnpm i
-pnpm run prebuild
+pnpm prebuild
 pnpm dev
 ```
 
-## Contributions
+如果需要本地打包 macOS 版本：
 
-Issue and PR welcome!
+```bash
+export PATH="$HOME/.cargo/bin:$PATH"
+export CI=true
+pnpm prebuild
+pnpm build
+```
 
-## Acknowledgement
+说明：如果项目路径包含空格，建议在无空格目录中执行打包，以避免 `scripts/prebuild.mjs` 中的系统命令路径问题。
 
-Clash Verge rev was based on or inspired by these projects and so on:
+## 致谢
 
-- [zzzgydi/clash-verge](https://github.com/zzzgydi/clash-verge): A Clash GUI based on tauri. Supports Windows, macOS and Linux.
-- [tauri-apps/tauri](https://github.com/tauri-apps/tauri): Build smaller, faster, and more secure desktop applications with a web frontend.
-- [Dreamacro/clash](https://github.com/Dreamacro/clash): A rule-based tunnel in Go.
-- [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo): A rule-based tunnel in Go.
-- [Fndroid/clash_for_windows_pkg](https://github.com/Fndroid/clash_for_windows_pkg): A Windows/macOS GUI based on Clash.
-- [vitejs/vite](https://github.com/vitejs/vite): Next generation frontend tooling. It's fast!
+`Clash Router` 基于或受以下项目启发：
 
-## License
+- [clash-verge-rev/clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev)
+- [zzzgydi/clash-verge](https://github.com/zzzgydi/clash-verge)
+- [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo)
+- [tauri-apps/tauri](https://github.com/tauri-apps/tauri)
+- [vitejs/vite](https://github.com/vitejs/vite)
 
-GPL-3.0 License. See [License here](./LICENSE) for details.
+## 许可证
+
+本项目遵循 `GPL-3.0`。详见 [LICENSE](./LICENSE)。
+

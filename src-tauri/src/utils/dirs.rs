@@ -4,19 +4,21 @@ use async_trait::async_trait;
 use clash_verge_logging::{Type, logging};
 use once_cell::sync::OnceCell;
 #[cfg(unix)]
+use std::os::unix::fs::PermissionsExt;
+#[cfg(unix)]
 use std::iter;
 use std::{fs, path::PathBuf};
 use tauri::Manager as _;
 
 #[cfg(not(feature = "verge-dev"))]
-pub static APP_ID: &str = "io.github.clash-verge-rev.clash-verge-rev";
+pub static APP_ID: &str = "io.github.hugoguan.clash-router";
 #[cfg(not(feature = "verge-dev"))]
-pub static BACKUP_DIR: &str = "clash-verge-rev-backup";
+pub static BACKUP_DIR: &str = "clash-router-backup";
 
 #[cfg(feature = "verge-dev")]
-pub static APP_ID: &str = "io.github.clash-verge-rev.clash-verge-rev.dev";
+pub static APP_ID: &str = "io.github.hugoguan.clash-router.dev";
 #[cfg(feature = "verge-dev")]
-pub static BACKUP_DIR: &str = "clash-verge-rev-backup-dev";
+pub static BACKUP_DIR: &str = "clash-router-backup-dev";
 
 pub static PORTABLE_FLAG: OnceCell<bool> = OnceCell::new();
 
@@ -106,7 +108,11 @@ pub fn find_target_icons(target: &str) -> Result<Option<String>> {
             prefix_matches && ext_matches
         });
 
-    icon_path.map(|path| path_to_str(&path).map(|s| s.into())).transpose()
+    if let Some(path) = icon_path {
+        Ok(Some(path_to_str(&path)?.into()))
+    } else {
+        Ok(None)
+    }
 }
 
 /// logs dir
@@ -155,6 +161,38 @@ pub fn sidecar_log_dir() -> Result<PathBuf> {
     let _ = std::fs::create_dir_all(&log_dir);
 
     Ok(log_dir)
+}
+
+pub fn current_exe_sibling_path(file_name: &str) -> Result<PathBuf> {
+    use tauri::utils::platform::current_exe;
+
+    Ok(current_exe()?.with_file_name(file_name))
+}
+
+#[cfg(unix)]
+pub fn ensure_current_exe_sibling_executable(file_name: &str) -> Result<PathBuf> {
+    let path = current_exe_sibling_path(file_name)?;
+    let metadata = fs::metadata(&path)?;
+    let mut permissions = metadata.permissions();
+    let mode = permissions.mode();
+
+    if mode & 0o111 != 0o111 {
+        permissions.set_mode(mode | 0o111);
+        fs::set_permissions(&path, permissions)?;
+        logging!(
+            info,
+            Type::File,
+            "Restored execute permission for sidecar binary: {:?}",
+            path
+        );
+    }
+
+    Ok(path)
+}
+
+#[cfg(not(unix))]
+pub fn ensure_current_exe_sibling_executable(file_name: &str) -> Result<PathBuf> {
+    current_exe_sibling_path(file_name)
 }
 
 pub fn service_log_dir() -> Result<PathBuf> {

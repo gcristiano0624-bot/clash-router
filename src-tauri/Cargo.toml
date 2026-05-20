@@ -1,10 +1,10 @@
 [package]
 name = "clash-verge"
-version = "2.5.1"
-description = "clash verge"
+version = "2.5.1-router.1"
+description = "Clash Router"
 authors = ["zzzgydi", "Tunglies", "wonfen", "MystiPanda"]
 license = "GPL-3.0-only"
-repository = "https://github.com/clash-verge-rev/clash-verge-rev.git"
+repository = "https://github.com/gcristiano0624-bot/clash-router.git"
 default-run = "clash-verge"
 build = "build.rs"
 edition = "2024"
@@ -24,7 +24,7 @@ clippy = ["tauri/test"]
 tracing = []
 
 [package.metadata.bundle]
-identifier = "io.github.clash-verge-rev.clash-verge-rev"
+identifier = "io.github.hugoguan.clash-router"
 
 [build-dependencies]
 tauri-build = { version = "2.5.6", features = [] }

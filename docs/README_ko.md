@@ -1,12 +1,12 @@
 <h1 align="center">
-  <img src="../src-tauri/icons/icon.png" alt="Clash" width="128" />
+  <img src="../src-tauri/icons/icon.png" alt="Clash Router" width="128" />
   <br>
-  <a href="https://github.com/zzzgydi/clash-verge">Clash Verge</a>의 후속 프로젝트
+  Clash Router
   <br>
 </h1>
 
 <h3 align="center">
-<a href="https://github.com/tauri-apps/tauri">Tauri</a>로 제작된 Clash Meta GUI.
+<a href="https://github.com/clash-verge-rev/clash-verge-rev">clash-verge-rev</a>를 기반으로 한 데스크톱 라우팅 및 프록시 클라이언트로, <a href="https://github.com/tauri-apps/tauri">Tauri 2</a>, Rust, React로 구성됩니다.
 </h3>
 
 <p align="center">
@@ -20,105 +20,45 @@
   <a href="./README_fa.md">فارسی</a>
 </p>
 
-## 미리보기
+## 개요
 
-| 다크                                 | 라이트                                  |
-| ------------------------------------ | --------------------------------------- |
-| ![다크 미리보기](./preview_dark.png) | ![라이트 미리보기](./preview_light.png) |
+`Clash Router`는 독립적인 앱 정체성, 더 평평한 UI, 안정성 개선을 갖춘 `mihomo`용 포크 클라이언트입니다.
 
 ## 설치
 
-[릴리스 페이지](https://github.com/clash-verge-rev/clash-verge-rev/releases)에서 사용 중인 플랫폼에 맞는 설치 프로그램을 다운로드하세요.<br>
-Windows (x64/x86), Linux (x64/arm64), macOS 10.15+ (Intel/Apple)을 지원합니다.
+- 저장소: [gcristiano0624-bot/clash-router](https://github.com/gcristiano0624-bot/clash-router)
+- 릴리스: [Releases](https://github.com/gcristiano0624-bot/clash-router/releases)
+- 프로젝트 문서: [Project.md](https://github.com/gcristiano0624-bot/clash-router/blob/main/docs/Project.md)
 
-#### 릴리스 채널 선택
+저장소에 보관된 macOS 산출물:
 
-| 채널        | 설명                                                                                 | 링크                                                                                   |
-| :---------- | :----------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------- |
-| Stable      | 안정 릴리스. 신뢰성이 높아 일상 사용에 적합합니다.                                   | [Release](https://github.com/clash-verge-rev/clash-verge-rev/releases)                 |
-| Alpha (EOL) | 퍼블리시 파이프라인 검증에 사용되었던 구 테스트 채널입니다.                          | [Alpha](https://github.com/clash-verge-rev/clash-verge-rev/releases/tag/alpha)         |
-| AutoBuild   | 롤링 빌드 채널. 테스트와 피드백 용도로 권장되며, 실험적인 변경이 포함될 수 있습니다. | [AutoBuild](https://github.com/clash-verge-rev/clash-verge-rev/releases/tag/autobuild) |
+- `release-assets/clash-router-macos/Clash Router.app`
+- `release-assets/clash-router-macos/Clash Router_2.5.1_aarch64.dmg`
+- `release-assets/clash-router-macos/Clash Router.app.tar.gz`
 
-#### 설치 가이드 및 FAQ
+## 릴리스 채널
 
-설치 방법, 트러블슈팅, 자주 묻는 질문은 [프로젝트 문서](https://clash-verge-rev.github.io/)를 참고하세요.
-
-### 텔레그램 채널
-
-업데이트 공지는 [@clash_verge_rev](https://t.me/clash_verge_re)에서 확인하세요.
-
----
-
-## 프로모션
-
-#### [Doggygo VPN — 고성능 글로벌 가속기](https://verge.dginv.click/#/register?code=oaxsAGo6)
-
-- 무료 체험, 할인 요금제, 스트리밍 해제, 선도적인 Hysteria 프로토콜 지원을 갖춘 고성능 해외 네트워크 서비스
-- Clash Verge 전용 초대 링크로 가입 시 3일간 매일 1GB 무료 체험 제공: [가입하기](https://verge.dginv.click/#/register?code=oaxsAGo6)
-- Clash Verge 전용 20% 할인 코드: `verge20` (선착순 500회)
-- 월 15.8위안부터 160GB 제공, 연간 결제 시 추가 20% 할인
-- 해외 팀 운영, 높은 신뢰성, 최대 50% 커미션
-- 로드밸런싱 클러스터, 고속 전용 회선(구 클라이언트 호환), 매우 낮은 지연, 4K도 쾌적
-- 세계 최초 **QUIC 프로토콜** 지원, 더 빠른 QUIC 계열 프로토콜 제공 (Clash Verge 클라이언트와 최적의 궁합)
-- 스트리밍 및 ChatGPT 접근 지원
-- 공식 사이트: [https://狗狗加速.com](https://verge.dginv.click/#/register?code=oaxsAGo6)
-
-### 🤖 [GPTKefu — Crisp과 긴밀히 통합된 AI 스마트 고객 서비스 플랫폼](https://gptkefu.com)
-
-- 🧠 전체 대화 맥락 + 이미지 인식을 깊이 이해하여 전문적이고 정확한 답변을 자동 제공 — 기계적인 응답은 이제 그만.
-- ♾️ **무제한 답변**, 할당량 걱정 없음 — 건당 과금하는 다른 AI 고객 서비스 제품과 차별화.
-- 💬 사전 상담, 사후 지원, 복잡한 문제 해결 — 모든 시나리오를 손쉽게 커버, 실제 사용 사례로 효과 검증.
-- ⚡ 3분 만에 설정, 러닝 커브 제로 — 고객 서비스 효율성과 고객 만족도를 즉시 향상.
-- 🎁 프리미엄 플랜 14일 무료 체험 — 먼저 체험 후 결제: 👉 [무료 체험 시작](https://gptkefu.com)
-- 📢 AI 고객 서비스 TG 채널: [@crisp_ai](https://t.me/crisp_ai)
-
----
+| 채널 | 설명 | 링크 |
+| :--- | :--- | :--- |
+| Stable | 일상 사용을 위한 안정 채널 | [Releases](https://github.com/gcristiano0624-bot/clash-router/releases) |
+| Router Preview | 브랜드화와 DNS 수정이 포함된 첫 번째 fork 릴리스 | [v2.5.1-router.1](https://github.com/gcristiano0624-bot/clash-router/releases/tag/v2.5.1-router.1) |
 
 ## 기능
 
-- 고성능 Rust와 Tauri 2 프레임워크 기반 데스크톱 앱
-- 내장 [Clash.Meta (mihomo)](https://github.com/MetaCubeX/mihomo) 코어, `Alpha` 채널 전환 지원
-- 테마 색상, 프록시 그룹/트레이 아이콘, `CSS Injection` 등 세련된 UI 커스터마이징
-- 프로필 관리(병합 및 스크립트 보조), 구성 문법 힌트 제공
-- 시스템 프록시 제어, 가드 모드, `TUN`(가상 네트워크 어댑터) 지원
-- 노드/규칙 시각 편집기
-- WebDAV 기반 설정 백업 및 동기화
-
-### FAQ
-
-플랫폼별 가이드는 [FAQ 페이지](https://clash-verge-rev.github.io/faq/windows.html)에서 확인하세요.
-
-### 후원
-
-[Clash Verge Rev 개발 후원](https://github.com/sponsors/clash-verge-rev)
+- Rust, Tauri 2, React 기반 데스크톱 클라이언트
+- `mihomo` sidecar / service 이중 실행 모드
+- DNS 수정과 macOS 실행 권한 자동 복구
+- 내비게이션, 홈, 프록시, 설정에 적용된 플랫 UI
 
 ## 개발
 
-자세한 기여 가이드는 [CONTRIBUTING.md](../CONTRIBUTING.md)를 참고하세요.
-
-**Tauri** 필수 구성 요소를 설치한 뒤 아래 명령으로 개발 서버를 실행합니다:
-
-```shell
+```bash
 pnpm i
-pnpm run prebuild
+pnpm prebuild
 pnpm dev
 ```
 
-## 기여
-
-Issue와 Pull Request를 환영합니다!
-
-## 감사의 말
-
-Clash Verge Rev는 다음 프로젝트에 기반하거나 영향을 받았습니다:
-
-- [zzzgydi/clash-verge](https://github.com/zzzgydi/clash-verge): Windows / macOS / Linux용 Tauri 기반 Clash GUI
-- [tauri-apps/tauri](https://github.com/tauri-apps/tauri): 웹 프론트엔드로 더 작고 빠르고 안전한 데스크톱 앱을 빌드
-- [Dreamacro/clash](https://github.com/Dreamacro/clash): Go로 작성된 규칙 기반 터널
-- [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo): Go로 작성된 규칙 기반 터널
-- [Fndroid/clash_for_windows_pkg](https://github.com/Fndroid/clash_for_windows_pkg): Windows / macOS용 Clash GUI
-- [vitejs/vite](https://github.com/vitejs/vite): 차세대 프론트엔드 툴링, 매우 빠른 DX
-
 ## 라이선스
 
-GPL-3.0 라이선스. 자세한 내용은 [LICENSE](../LICENSE)를 참고하세요.
+`GPL-3.0` 라이선스. 자세한 내용은 [LICENSE](../LICENSE)를 참고하세요.
+

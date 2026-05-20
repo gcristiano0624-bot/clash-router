@@ -20,11 +20,11 @@ const SettingPage = () => {
   }
 
   const toGithubRepo = useLockFn(() => {
-    return openWebUrl('https://github.com/clash-verge-rev/clash-verge-rev')
+    return openWebUrl('https://github.com/gcristiano0624-bot/clash-router')
   })
 
   const toGithubDoc = useLockFn(() => {
-    return openWebUrl('https://clash-verge-rev.github.io/index.html')
+    return openWebUrl('https://github.com/gcristiano0624-bot/clash-router/blob/main/docs/Project.md')
   })
 
   const toTelegramChannel = useLockFn(() => {
@@ -38,7 +38,19 @@ const SettingPage = () => {
     <BasePage
       title={t('settings.page.title')}
       header={
-        <ButtonGroup variant="contained" aria-label="Basic button group">
+        <ButtonGroup
+          variant="contained"
+          aria-label="Basic button group"
+          sx={(theme) => ({
+            borderRadius: 3,
+            overflow: 'hidden',
+            border: `1px solid ${theme.palette.divider}`,
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? 'rgba(255,255,255,0.82)'
+                : 'rgba(19,32,51,0.8)',
+          })}
+        >
           <IconButton
             size="medium"
             color="inherit"
@@ -70,38 +82,42 @@ const SettingPage = () => {
       <Grid container spacing={1.5} columns={{ xs: 6, sm: 6, md: 12 }}>
         <Grid size={6}>
           <Box
-            sx={{
-              borderRadius: 2,
+            sx={(theme) => ({
+              borderRadius: 4,
               marginBottom: 1.5,
-              backgroundColor: isDark ? '#282a36' : '#ffffff',
-            }}
+              border: `1px solid ${theme.palette.divider}`,
+              backgroundColor: isDark ? '#132033' : '#ffffff',
+            })}
           >
             <SettingSystem onError={onError} />
           </Box>
           <Box
-            sx={{
-              borderRadius: 2,
-              backgroundColor: isDark ? '#282a36' : '#ffffff',
-            }}
+            sx={(theme) => ({
+              borderRadius: 4,
+              border: `1px solid ${theme.palette.divider}`,
+              backgroundColor: isDark ? '#132033' : '#ffffff',
+            })}
           >
             <SettingClash onError={onError} />
           </Box>
         </Grid>
         <Grid size={6}>
           <Box
-            sx={{
-              borderRadius: 2,
+            sx={(theme) => ({
+              borderRadius: 4,
               marginBottom: 1.5,
-              backgroundColor: isDark ? '#282a36' : '#ffffff',
-            }}
+              border: `1px solid ${theme.palette.divider}`,
+              backgroundColor: isDark ? '#132033' : '#ffffff',
+            })}
           >
             <SettingVergeBasic onError={onError} />
           </Box>
           <Box
-            sx={{
-              borderRadius: 2,
-              backgroundColor: isDark ? '#282a36' : '#ffffff',
-            }}
+            sx={(theme) => ({
+              borderRadius: 4,
+              border: `1px solid ${theme.palette.divider}`,
+              backgroundColor: isDark ? '#132033' : '#ffffff',
+            })}
           >
             <SettingVergeAdvanced onError={onError} />
           </Box>

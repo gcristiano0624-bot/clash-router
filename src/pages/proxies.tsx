@@ -154,7 +154,21 @@ const ProxyPage = () => {
         )
       }
       header={
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            px: 1,
+            py: 0.75,
+            borderRadius: 3,
+            border: `1px solid ${theme.palette.divider}`,
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? 'rgba(255,255,255,0.8)'
+                : 'rgba(19,32,51,0.78)',
+          })}
+        >
           <ProviderButton />
 
           <ButtonGroup size="small">
@@ -174,7 +188,7 @@ const ProxyPage = () => {
             size="small"
             variant={isChainMode ? 'contained' : 'outlined'}
             onClick={onToggleChainMode}
-            sx={{ ml: 1 }}
+            sx={{ ml: 1, borderRadius: 3 }}
             startIcon={
               isChainMode ? (
                 <LanRounded fontSize="small" />

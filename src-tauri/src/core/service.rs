@@ -11,7 +11,6 @@ use compact_str::CompactString;
 use once_cell::sync::Lazy;
 use std::{
     borrow::Cow,
-    env::current_exe,
     path::{Path, PathBuf},
     process::Command as StdCommand,
     time::Duration,
@@ -349,7 +348,7 @@ pub(super) async fn start_with_existing_service(config_file: &PathBuf) -> Result
     drop(verge_config);
 
     let bin_ext = if cfg!(windows) { ".exe" } else { "" };
-    let bin_path = current_exe()?.with_file_name(format!("{clash_core}{bin_ext}"));
+    let bin_path = dirs::ensure_current_exe_sibling_executable(&format!("{clash_core}{bin_ext}"))?;
 
     let payload = clash_verge_service_ipc::ClashConfig {
         core_config: CoreConfig {
@@ -363,7 +362,7 @@ pub(super) async fn start_with_existing_service(config_file: &PathBuf) -> Result
 
     let response = clash_verge_service_ipc::start_clash(&payload)
         .await
-        .context("无法连接到Clash Verge Service")?;
+        .context("无法连接到 Clash Router Service")?;
 
     if response.code > 0 {
         let err_msg = response.message;
@@ -390,7 +389,7 @@ pub(super) async fn get_clash_logs_by_service() -> Result<Vec<CompactString>> {
 
     let response = clash_verge_service_ipc::get_clash_logs()
         .await
-        .context("无法连接到Clash Verge Service")?;
+        .context("无法连接到 Clash Router Service")?;
 
     if response.code > 0 {
         let err_msg = response.message;
@@ -408,7 +407,7 @@ pub(super) async fn stop_core_by_service() -> Result<()> {
 
     let response = clash_verge_service_ipc::stop_clash()
         .await
-        .context("无法连接到Clash Verge Service")?;
+        .context("无法连接到 Clash Router Service")?;
 
     if response.code > 0 {
         let err_msg = response.message;
