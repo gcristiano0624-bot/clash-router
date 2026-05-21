@@ -333,6 +333,7 @@ const UnlockPage = () => {
 
   return (
     <BasePage
+      className="ux-page-unlock"
       title={t('tests.unlock.page.title')}
       header={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

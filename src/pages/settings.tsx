@@ -36,6 +36,7 @@ const SettingPage = () => {
 
   return (
     <BasePage
+      className="ux-page-settings"
       title={t('settings.page.title')}
       header={
         <ButtonGroup

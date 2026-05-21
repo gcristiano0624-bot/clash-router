@@ -9,7 +9,6 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual'
 import { useLockFn } from 'ahooks'
@@ -769,9 +768,7 @@ function ProxyVirtualList({
   onHeadState,
   onChangeProxy,
 }: ProxyVirtualListProps) {
-  const theme = useTheme()
-  const stickyBackground =
-    theme.palette.mode === 'dark' ? '#1e1f27' : 'var(--background-color)'
+  const stickyBackground = 'var(--ux-bg)'
 
   return (
     <div ref={parentRef} style={{ height, overflow: 'auto' }}>

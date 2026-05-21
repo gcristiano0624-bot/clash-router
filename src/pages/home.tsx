@@ -388,6 +388,7 @@ const HomePage = () => {
   )
   return (
     <BasePage
+      className="ux-page-home"
       title={t('home.page.title')}
       contentStyle={{ padding: 4 }}
       header={

@@ -3,8 +3,13 @@ import { Rule } from 'tauri-plugin-mihomo-api'
 
 const Item = styled(Box)(({ theme }) => ({
   display: 'flex',
-  padding: '4px 16px',
+  padding: '7px 14px',
   color: theme.palette.text.primary,
+  borderBottom: '1px solid var(--ux-border)',
+  background: 'var(--ux-surface)',
+  '&:hover': {
+    background: 'var(--ux-accent-bg)',
+  },
 }))
 
 const COLOR = [
@@ -34,17 +39,36 @@ const RuleItem = (props: Props) => {
   const { value } = props
 
   return (
-    <Item sx={{ borderBottom: '1px solid var(--divider-color)' }}>
+    <Item>
       <Typography
         color="text.secondary"
         variant="body2"
-        sx={{ lineHeight: 2, minWidth: 30, mr: 2.25, textAlign: 'center' }}
+        sx={{
+          lineHeight: 2,
+          minWidth: 34,
+          mr: 2,
+          textAlign: 'right',
+          fontFamily: 'var(--ux-font-mono)',
+          fontSize: 11,
+        }}
       >
         {value.lineNo}
       </Typography>
 
-      <Box sx={{ userSelect: 'text' }}>
-        <Typography component="h6" variant="subtitle1" color="text.primary">
+      <Box sx={{ minWidth: 0, flex: 1, userSelect: 'text' }}>
+        <Typography
+          component="h6"
+          variant="subtitle1"
+          color="text.primary"
+          sx={{
+            fontSize: 13,
+            fontWeight: 650,
+            lineHeight: 1.4,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
           {value.payload || '-'}
         </Typography>
 
@@ -52,7 +76,14 @@ const RuleItem = (props: Props) => {
           component="span"
           variant="body2"
           color="text.secondary"
-          sx={{ mr: 3, minWidth: 120, display: 'inline-block' }}
+          sx={{
+            mr: 2,
+            minWidth: 110,
+            display: 'inline-block',
+            fontSize: 11,
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+          }}
         >
           {value.type}
         </Typography>
@@ -61,6 +92,7 @@ const RuleItem = (props: Props) => {
           component="span"
           variant="body2"
           color={parseColor(value.proxy)}
+          sx={{ fontSize: 12, fontWeight: 650 }}
         >
           {value.proxy}
         </Typography>

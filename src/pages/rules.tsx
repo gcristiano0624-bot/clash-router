@@ -55,6 +55,7 @@ const RulesPage = () => {
 
   return (
     <BasePage
+      className="ux-page-rules"
       full
       title={t('rules.page.title')}
       contentStyle={{

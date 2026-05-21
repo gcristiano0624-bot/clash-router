@@ -132,6 +132,7 @@ const ProxyPage = () => {
 
   return (
     <BasePage
+      className="ux-page-proxies"
       full
       contentStyle={{ height: '101.5%' }}
       title={

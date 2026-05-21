@@ -24,6 +24,28 @@ body {
   --page-surface-color: #eff3f8;
   --background-color-alpha: rgba(24, 103, 192, 0.1);
   --border-radius: 16px;
+  --ux-bg: #f6f8fb;
+  --ux-surface: #ffffff;
+  --ux-surface-raised: #ffffff;
+  --ux-fg: #0f172a;
+  --ux-muted: #5b6475;
+  --ux-border: #e3e8f0;
+  --ux-accent: #1677c8;
+  --ux-accent-hover: #0f63ad;
+  --ux-accent-bg: #e7f0fb;
+  --ux-success: #178f62;
+  --ux-warning: #d48b17;
+  --ux-error: #d64545;
+  --ux-info: #1677c8;
+  --ux-sidebar-bg: #202532;
+  --ux-sidebar-fg: #aab3c3;
+  --ux-sidebar-active: #ffffff;
+  --ux-sidebar-hover: #2a3040;
+  --ux-sidebar-border: #343b4d;
+  --ux-shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --ux-shadow-raised: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --ux-font-display: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --ux-font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
 }
 
 ::selection {
@@ -32,13 +54,16 @@ body {
 }
 
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  border-radius: 6px;
-  background-color: var(--scroller-color);
+  border-radius: 0;
+  background-color: var(--ux-border, var(--scroller-color));
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ux-muted, var(--scroller-color));
 }
 *::-webkit-scrollbar-corner {
   background-color: transparent;
