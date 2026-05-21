@@ -8,19 +8,23 @@ interface Props {
   title?: React.ReactNode // the page title
   header?: React.ReactNode // something behind title
   contentStyle?: React.CSSProperties
+  className?: string
   children?: ReactNode
   full?: boolean
 }
 
 export const BasePage: React.FC<Props> = (props) => {
-  const { title, header, contentStyle, full, children } = props
+  const { title, header, contentStyle, className, full, children } = props
   const theme = useTheme()
 
   const isDark = theme.palette.mode === 'dark'
+  const pageBackground = isDark
+    ? 'var(--ux-bg, #0E1724)'
+    : 'var(--ux-bg, var(--page-surface-color))'
 
   return (
     <BaseErrorBoundary>
-      <div className="base-page">
+      <div className={className ? `base-page ${className}` : 'base-page'}>
         <header data-tauri-drag-region="true" style={{ userSelect: 'none' }}>
           <Typography
             sx={{ fontSize: 18, fontWeight: 700, letterSpacing: '-0.01em' }}
@@ -35,12 +39,12 @@ export const BasePage: React.FC<Props> = (props) => {
         <div
           className={full ? 'base-container no-padding' : 'base-container'}
           style={{
-            backgroundColor: isDark ? '#0E1724' : 'var(--page-surface-color)',
+            backgroundColor: pageBackground,
           }}
         >
           <section
             style={{
-              backgroundColor: isDark ? '#0E1724' : 'var(--page-surface-color)',
+              backgroundColor: pageBackground,
             }}
           >
             <div className="base-content" style={contentStyle}>

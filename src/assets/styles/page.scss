@@ -46,3 +46,293 @@
     }
   }
 }
+
+.layout .base-page {
+  background: var(--ux-bg);
+  color: var(--ux-fg);
+
+  > header {
+    flex-basis: 40px;
+    min-height: 40px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--ux-border);
+    background: var(--ux-surface);
+
+    .MuiTypography-root {
+      font-family: var(--ux-font-display);
+      font-size: 15px;
+      font-weight: 650;
+      color: var(--ux-fg);
+    }
+  }
+
+  .base-container > section {
+    padding: 2px;
+  }
+
+  .base-container:not(.no-padding) .base-content {
+    width: 100%;
+    min-height: 100%;
+  }
+
+  .base-container.no-padding > section {
+    overflow: hidden;
+  }
+
+  .MuiPaper-root,
+  .MuiCard-root,
+  .MuiAccordion-root {
+    background-image: none;
+    background-color: var(--ux-surface);
+    border-color: var(--ux-border);
+    box-shadow: var(--ux-shadow-card);
+  }
+
+  .MuiButton-root {
+    min-height: 28px;
+    border-radius: 0;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: none;
+  }
+
+  .MuiButton-contained {
+    background: var(--ux-accent);
+    color: #fff;
+  }
+
+  .MuiButton-contained:hover {
+    background: var(--ux-accent-hover);
+  }
+
+  .MuiButton-outlined {
+    color: var(--ux-fg);
+    border-color: var(--ux-border);
+    background: color-mix(in oklch, var(--ux-surface) 92%, transparent);
+  }
+
+  .MuiIconButton-root {
+    border-radius: 0;
+  }
+
+  .MuiChip-root {
+    border-radius: 0;
+    font-weight: 600;
+  }
+
+  .MuiOutlinedInput-root,
+  .MuiInputBase-root {
+    border-radius: 0;
+    color: var(--ux-fg);
+    background: var(--ux-surface-raised);
+  }
+
+  .MuiTableCell-root {
+    border-bottom-color: var(--ux-border);
+  }
+
+  .MuiSkeleton-root {
+    border-radius: 0;
+  }
+}
+
+.layout .base-page .MuiGrid-container {
+  margin: 0;
+}
+
+.layout .base-page .MuiGrid-root > .MuiBox-root,
+.layout .base-page .MuiGrid-root > .MuiPaper-root {
+  border-radius: 0 !important;
+  border: 1px solid var(--ux-border) !important;
+  background: var(--ux-surface) !important;
+  box-shadow: var(--ux-shadow-card) !important;
+}
+
+.layout.ux-theme-warm .base-page .MuiGrid-root > .MuiBox-root,
+.layout.ux-theme-warm .base-page .MuiGrid-root > .MuiPaper-root {
+  border-top: 2px solid var(--ux-border) !important;
+}
+
+.layout .base-page [class*='card'],
+.layout .base-page [class*='Card'] {
+  border-radius: 0;
+}
+
+.layout {
+  .ux-page-home .base-content,
+  .ux-page-settings .base-content,
+  .ux-page-unlock .base-content {
+    padding: 12px;
+  }
+
+  .ux-page-home .MuiGrid-container,
+  .ux-page-settings .MuiGrid-container,
+  .ux-page-unlock .MuiGrid-container {
+    width: 100%;
+  }
+
+  .ux-page-home .MuiChip-root,
+  .ux-page-settings .MuiChip-root {
+    height: 22px;
+    border-color: var(--ux-border);
+    color: var(--ux-muted);
+  }
+
+  .ux-page-proxies .base-content,
+  .ux-page-profiles .base-content,
+  .ux-page-connections .base-content,
+  .ux-page-rules .base-content,
+  .ux-page-logs .base-content {
+    height: 100%;
+    padding: 0;
+    background: var(--ux-bg);
+  }
+
+  .ux-page-proxies > header,
+  .ux-page-profiles > header,
+  .ux-page-connections > header,
+  .ux-page-rules > header,
+  .ux-page-logs > header {
+    position: relative;
+    z-index: 3;
+  }
+
+  .ux-page-proxies > header > .MuiBox-root,
+  .ux-page-connections > header > .MuiBox-root,
+  .ux-page-logs > header > .MuiBox-root,
+  .ux-page-settings > header .MuiButtonGroup-root {
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .ux-page-proxies .base-container,
+  .ux-page-profiles .base-container,
+  .ux-page-connections .base-container,
+  .ux-page-rules .base-container,
+  .ux-page-logs .base-container {
+    background: var(--ux-bg) !important;
+  }
+
+  .ux-page-proxies .base-content > div:first-child {
+    background:
+      linear-gradient(90deg, var(--ux-bg), transparent 38px),
+      var(--ux-bg);
+  }
+
+  .ux-page-proxies .MuiListItemButton-root {
+    color: var(--ux-fg);
+  }
+
+  .ux-page-proxies .MuiListItemButton-root:hover {
+    background: var(--ux-accent-bg) !important;
+  }
+
+  .ux-page-proxies .MuiChip-root {
+    height: 22px;
+    border-radius: 0;
+  }
+
+  .ux-page-proxies .MuiButtonGroup-root .MuiButton-root,
+  .ux-page-connections .MuiButtonGroup-root .MuiButton-root {
+    border-radius: 0;
+  }
+
+  .ux-page-profiles .base-content > .MuiBox-root:first-child,
+  .ux-page-connections .base-content > .MuiBox-root:first-child,
+  .ux-page-rules .base-content > .MuiBox-root:first-child,
+  .ux-page-logs .base-content > .MuiBox-root:first-child {
+    margin: 0 !important;
+    padding: 6px 10px !important;
+    min-height: 40px;
+    height: auto !important;
+    border-bottom: 1px solid var(--ux-border);
+    background: var(--ux-surface);
+  }
+
+  .ux-page-profiles .MuiTextField-root,
+  .ux-page-connections .MuiTextField-root,
+  .ux-page-rules .MuiTextField-root,
+  .ux-page-logs .MuiTextField-root {
+    background: var(--ux-surface-raised);
+  }
+
+  .ux-page-connections .MuiFab-root {
+    border-radius: 0;
+    background: var(--ux-accent);
+  }
+
+  .ux-page-connections table,
+  .ux-page-connections .MuiTable-root {
+    font-size: 12px;
+  }
+
+  .ux-page-connections .MuiTableHead-root .MuiTableCell-root {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--ux-surface);
+    color: var(--ux-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .ux-page-rules .base-content,
+  .ux-page-logs .base-content {
+    font-family: var(--ux-font-mono);
+  }
+
+  .ux-page-logs .MuiSelect-select,
+  .ux-page-rules .MuiInputBase-input,
+  .ux-page-connections .MuiInputBase-input {
+    font-size: 12px;
+  }
+
+  .ux-page-settings .MuiGrid-root > .MuiBox-root {
+    overflow: hidden;
+    border-radius: 0;
+    border: 1px solid var(--ux-border) !important;
+    background: var(--ux-surface) !important;
+  }
+
+  .ux-page-settings .MuiListItem-root,
+  .ux-page-settings .MuiBox-root {
+    --settings-row-border: var(--ux-border);
+  }
+
+  .ux-page-unlock .MuiCard-root {
+    border-radius: 0;
+    border: 1px solid var(--ux-border);
+    background: var(--ux-surface);
+  }
+
+  .ux-page-unlock .MuiChip-root {
+    border-radius: 0;
+  }
+
+  &.ux-theme-warm {
+    .base-page > header .MuiTypography-root,
+    .ux-page-home .MuiTypography-root {
+      font-family: var(--ux-font-display);
+    }
+
+    .base-page > header {
+      border-bottom-width: 2px;
+    }
+  }
+
+  &.ux-theme-dark {
+    .base-page > header,
+    .ux-page-profiles .base-content > .MuiBox-root:first-child,
+    .ux-page-connections .base-content > .MuiBox-root:first-child,
+    .ux-page-rules .base-content > .MuiBox-root:first-child,
+    .ux-page-logs .base-content > .MuiBox-root:first-child {
+      background: color-mix(in oklch, var(--ux-surface) 78%, transparent);
+      backdrop-filter: blur(18px);
+    }
+  }
+}

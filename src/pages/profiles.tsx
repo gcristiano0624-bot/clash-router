@@ -807,6 +807,7 @@ const ProfilePage = () => {
 
   return (
     <BasePage
+      className="ux-page-profiles"
       full
       title={t('profiles.page.title')}
       contentStyle={{ height: '100%' }}

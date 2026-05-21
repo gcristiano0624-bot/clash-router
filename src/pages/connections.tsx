@@ -124,6 +124,7 @@ const ConnectionsPage = () => {
 
   return (
     <BasePage
+      className="ux-page-connections"
       full
       title={
         <span style={{ whiteSpace: 'nowrap' }}>

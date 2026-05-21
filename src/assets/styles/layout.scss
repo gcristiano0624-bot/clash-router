@@ -285,3 +285,342 @@
     }
   }
 }
+
+.layout {
+  &.ux-theme-macos {
+    --ux-bg: oklch(96% 0.005 260);
+    --ux-surface: oklch(100% 0 0);
+    --ux-surface-raised: oklch(100% 0 0);
+    --ux-fg: oklch(22% 0.015 260);
+    --ux-muted: oklch(54% 0.012 258);
+    --ux-border: oklch(90% 0.006 256);
+    --ux-accent: oklch(54% 0.18 260);
+    --ux-accent-hover: oklch(48% 0.18 260);
+    --ux-accent-bg: oklch(93% 0.06 260);
+    --ux-success: oklch(56% 0.16 145);
+    --ux-warning: oklch(70% 0.16 80);
+    --ux-error: oklch(56% 0.2 25);
+    --ux-info: oklch(62% 0.12 240);
+    --ux-sidebar-bg: oklch(18% 0.015 260);
+    --ux-sidebar-fg: oklch(70% 0.01 260);
+    --ux-sidebar-active: oklch(95% 0.005 260);
+    --ux-sidebar-hover: oklch(24% 0.012 260);
+    --ux-sidebar-border: oklch(25% 0.012 258);
+    --ux-shadow-card: 0 0.5px 1.5px rgba(0, 0, 0, 0.04),
+      0 3px 10px rgba(0, 0, 0, 0.04);
+    --ux-shadow-raised: 0 1px 4px rgba(0, 0, 0, 0.06),
+      0 6px 20px rgba(0, 0, 0, 0.05);
+    --ux-font-display: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  }
+
+  &.ux-theme-dark {
+    --ux-bg: oklch(14% 0.018 260);
+    --ux-surface: oklch(19% 0.02 260 / 0.7);
+    --ux-surface-raised: oklch(22% 0.02 260 / 0.7);
+    --ux-fg: oklch(88% 0.008 260);
+    --ux-muted: oklch(56% 0.01 260);
+    --ux-border: oklch(28% 0.015 260);
+    --ux-accent: oklch(62% 0.25 290);
+    --ux-accent-hover: oklch(56% 0.25 290);
+    --ux-accent-bg: oklch(22% 0.12 290);
+    --ux-success: oklch(56% 0.16 145);
+    --ux-warning: oklch(72% 0.18 80);
+    --ux-error: oklch(58% 0.22 25);
+    --ux-info: oklch(62% 0.12 240);
+    --ux-sidebar-bg: oklch(10% 0.012 260);
+    --ux-sidebar-fg: oklch(60% 0.01 260);
+    --ux-sidebar-active: oklch(92% 0.005 260);
+    --ux-sidebar-hover: oklch(16% 0.015 260);
+    --ux-sidebar-border: oklch(22% 0.015 260);
+    --ux-shadow-card: 0 4px 16px rgba(0, 0, 0, 0.25);
+    --ux-shadow-raised: 0 6px 24px rgba(0, 0, 0, 0.35);
+    --ux-font-display: Inter, -apple-system, BlinkMacSystemFont, system-ui,
+      sans-serif;
+  }
+
+  &.ux-theme-warm {
+    --ux-bg: oklch(93% 0.012 55);
+    --ux-surface: oklch(96% 0.015 55);
+    --ux-surface-raised: oklch(98% 0.012 55);
+    --ux-fg: oklch(20% 0.04 45);
+    --ux-muted: oklch(52% 0.04 45);
+    --ux-border: oklch(86% 0.02 55);
+    --ux-accent: oklch(64% 0.13 28);
+    --ux-accent-hover: oklch(58% 0.13 28);
+    --ux-accent-bg: oklch(89% 0.04 30);
+    --ux-success: oklch(56% 0.14 145);
+    --ux-warning: oklch(70% 0.16 80);
+    --ux-error: oklch(56% 0.2 25);
+    --ux-info: oklch(60% 0.1 240);
+    --ux-sidebar-bg: oklch(18% 0.05 45);
+    --ux-sidebar-fg: oklch(65% 0.03 45);
+    --ux-sidebar-active: oklch(92% 0.02 45);
+    --ux-sidebar-hover: oklch(23% 0.04 45);
+    --ux-sidebar-border: oklch(26% 0.04 45);
+    --ux-shadow-card: none;
+    --ux-shadow-raised: none;
+    --ux-font-display: 'Iowan Old Style', Charter, Newsreader, Georgia, serif;
+  }
+
+  background: var(--ux-bg) !important;
+  color: var(--ux-fg);
+  font-family:
+    -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  .layout-content {
+    gap: 0;
+    padding: 0;
+    background: var(--ux-bg);
+  }
+
+  .layout-content__left {
+    flex: 0 0 220px;
+    width: 220px;
+    min-width: 220px;
+    padding: 0;
+    border: none;
+    border-right: 1px solid var(--ux-sidebar-border);
+    border-radius: 0;
+    background: var(--ux-sidebar-bg);
+    backdrop-filter: none;
+  }
+
+  .layout-content__right {
+    border: none;
+    border-radius: 0;
+    background: var(--ux-bg);
+  }
+
+  .layout-content__right .the-content {
+    top: 0;
+  }
+
+  .layout-content__left .the-logo {
+    flex: 0 0 58px;
+    height: 58px;
+    padding: 12px 14px 10px 16px;
+    border-bottom: 1px solid var(--ux-sidebar-border);
+  }
+
+  .the-logo__brand {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .the-logo__mark {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ux-accent);
+  }
+
+  .the-logo__mark .MuiSvgIcon-root {
+    width: 24px;
+    height: 24px;
+    color: #fff;
+  }
+
+  .the-logo__text {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .the-logo__title {
+    color: var(--ux-sidebar-active);
+    font-family: var(--ux-font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .the-logo__version {
+    margin-top: 3px;
+    color: var(--ux-sidebar-fg);
+    font-size: 9px;
+    opacity: 0.72;
+  }
+
+  .the-logo__wordmark {
+    display: none;
+  }
+
+  .layout-content__left .the-newbtn {
+    right: 10px;
+    top: 7px;
+    transform: scale(0.72);
+    opacity: 0.88;
+  }
+
+  .the-menu {
+    padding: 6px 0;
+  }
+
+  .the-menu .MuiListItem-root {
+    max-width: none;
+    padding: 1px 8px;
+  }
+
+  .the-menu .MuiListItemButton-root {
+    min-height: 34px;
+    margin: 0;
+    padding: 7px 8px;
+    border-radius: 0;
+    color: var(--ux-sidebar-fg);
+    border: 0 !important;
+    background: transparent;
+    transition:
+      color 0.15s,
+      background 0.15s;
+  }
+
+  .the-menu .MuiListItemButton-root:hover {
+    color: var(--ux-sidebar-active);
+    background: var(--ux-sidebar-hover);
+  }
+
+  .the-menu .MuiListItemButton-root.Mui-selected {
+    position: relative;
+    color: var(--ux-sidebar-active);
+    background: transparent;
+  }
+
+  .the-menu .MuiListItemButton-root.Mui-selected::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--ux-accent);
+  }
+
+  .the-menu .MuiListItemButton-root.Mui-selected:hover {
+    background: var(--ux-sidebar-hover);
+  }
+
+  .the-menu .MuiListItemIcon-root {
+    min-width: 28px;
+    margin-left: 0;
+    color: currentColor;
+  }
+
+  .the-menu .MuiListItemText-root {
+    margin-left: 0 !important;
+    text-align: left;
+  }
+
+  .the-menu .MuiListItemText-primary {
+    color: currentColor !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+  }
+
+  .the-traffic {
+    border-top: 1px solid var(--ux-sidebar-border);
+    padding: 12px 14px;
+    color: var(--ux-sidebar-fg);
+  }
+
+  .the-traffic > div {
+    padding: 0 !important;
+  }
+
+  .the-traffic .MuiTypography-root {
+    font-family: var(--ux-font-mono);
+    color: var(--ux-sidebar-active);
+    font-size: 11px;
+  }
+
+  .the-theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .the-theme-switcher__swatch {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: 1.5px solid transparent;
+    border-radius: 0;
+    cursor: pointer;
+    opacity: 0.62;
+    appearance: none;
+  }
+
+  .the-theme-switcher__swatch:hover,
+  .the-theme-switcher__swatch.is-active {
+    opacity: 1;
+  }
+
+  .the-theme-switcher__swatch.is-active {
+    border-color: var(--ux-sidebar-active);
+  }
+
+  .the-theme-switcher__swatch--macos {
+    background: oklch(54% 0.18 260);
+  }
+
+  .the-theme-switcher__swatch--dark {
+    background: oklch(62% 0.25 290);
+  }
+
+  .the-theme-switcher__swatch--warm {
+    background: oklch(64% 0.13 28);
+  }
+
+  .the-theme-switcher__label {
+    margin-left: auto;
+    color: var(--ux-sidebar-fg);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.62;
+  }
+}
+
+.macos.layout {
+  .layout-content__left {
+    padding-top: 0;
+  }
+
+  .layout-content__right .the-content {
+    top: 0;
+  }
+}
+
+.layout.layout--nav-collapsed {
+  .layout-content__left {
+    border-radius: 0 !important;
+    background: var(--ux-sidebar-bg) !important;
+  }
+
+  .layout-content__left .the-logo {
+    margin: 0 !important;
+    border-bottom: 1px solid var(--ux-sidebar-border);
+  }
+
+  .the-logo__text,
+  .the-theme-switcher,
+  .the-logo .the-newbtn {
+    display: none !important;
+  }
+
+  .the-logo__mark {
+    margin: 0 auto;
+  }
+
+  .the-menu .MuiListItemButton-root {
+    width: var(--layout-nav-item-size) !important;
+    margin: 0 auto;
+  }
+}

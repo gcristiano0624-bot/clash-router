@@ -20,6 +20,7 @@ import {
   Paper,
   SvgIcon,
   ThemeProvider,
+  Typography,
 } from '@mui/material'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -61,6 +62,30 @@ export const portableFlag = false
 type NavItem = (typeof navItems)[number]
 
 type MenuContextPosition = { top: number; left: number }
+type UxThemeName = 'macos' | 'dark' | 'warm'
+
+const UX_THEME_STORAGE_KEY = 'clash-router-ux-theme'
+const UX_THEMES: Array<{
+  name: UxThemeName
+  label: string
+  title: string
+}> = [
+  { name: 'macos', label: 'macOS', title: 'macOS 原生' },
+  { name: 'dark', label: 'Dark', title: '深色仪表盘' },
+  { name: 'warm', label: 'Warm', title: '暖色杂志' },
+]
+
+const getStoredUxTheme = (): UxThemeName => {
+  try {
+    const saved = localStorage.getItem(UX_THEME_STORAGE_KEY)
+    if (saved === 'macos' || saved === 'dark' || saved === 'warm') {
+      return saved
+    }
+  } catch {
+    // localStorage can be unavailable in restricted webviews.
+  }
+  return 'macos'
+}
 
 interface SortableNavMenuItemProps {
   item: NavItem
@@ -126,6 +151,7 @@ const Layout = () => {
   const themeReady = useMemo(() => Boolean(theme), [theme])
 
   const [menuUnlocked, setMenuUnlocked] = useState(false)
+  const [uxTheme, setUxTheme] = useState<UxThemeName>(getStoredUxTheme)
   const [menuContextPosition, setMenuContextPosition] =
     useState<MenuContextPosition | null>(null)
 
@@ -205,6 +231,15 @@ const Layout = () => {
     void patchVerge({ collapse_navbar: !navCollapsed })
   }, [navCollapsed, patchVerge])
 
+  const handleUxThemeChange = useCallback((themeName: UxThemeName) => {
+    setUxTheme(themeName)
+    try {
+      localStorage.setItem(UX_THEME_STORAGE_KEY, themeName)
+    } catch {
+      // Non-fatal: the UI still switches for the current session.
+    }
+  }, [])
+
   const customTitlebar = useMemo(
     () =>
       !decorated ? (
@@ -280,7 +315,7 @@ const Layout = () => {
       <Paper
         square
         elevation={0}
-        className={`${OS} layout${navCollapsed ? ' layout--nav-collapsed' : ''}`}
+        className={`${OS} layout ux-theme-${uxTheme}${navCollapsed ? ' layout--nav-collapsed' : ''}`}
         style={{
           borderTopLeftRadius: '0px',
           borderTopRightRadius: '0px',
@@ -315,32 +350,24 @@ const Layout = () => {
           <div className="layout-content__left">
             <div className="the-logo" data-tauri-drag-region="false">
               <div
+                className="the-logo__brand"
                 data-tauri-drag-region="true"
-                style={{
-                  height: '32px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  alignItems: 'center',
-                }}
               >
-                <SvgIcon
-                  component={isDark ? iconDark : iconLight}
-                  style={{
-                    height: '40px',
-                    width: '40px',
-                    marginRight: '10px',
-                    marginLeft: '-2px',
-                  }}
-                  inheritViewBox
-                />
-                <LogoSvg
-                  style={{
-                    flex: 1,
-                    height: '26px',
-                    color: isDark ? '#ffffff' : '#0f172a',
-                  }}
-                />
+                <span className="the-logo__mark">
+                  <SvgIcon
+                    component={isDark ? iconDark : iconLight}
+                    inheritViewBox
+                  />
+                </span>
+                <span className="the-logo__text">
+                  <Typography component="span" className="the-logo__title">
+                    Clash Router
+                  </Typography>
+                  <Typography component="span" className="the-logo__version">
+                    v2.5.1-router.1
+                  </Typography>
+                </span>
+                <LogoSvg className="the-logo__wordmark" />
               </div>
               <UpdateButton className="the-newbtn" />
             </div>
@@ -454,6 +481,23 @@ const Layout = () => {
             </Menu>
 
             <div className="the-traffic">
+              <div className="the-theme-switcher">
+                {UX_THEMES.map((item) => (
+                  <button
+                    key={item.name}
+                    type="button"
+                    className={`the-theme-switcher__swatch the-theme-switcher__swatch--${item.name}${
+                      uxTheme === item.name ? ' is-active' : ''
+                    }`}
+                    title={item.title}
+                    aria-label={item.title}
+                    onClick={() => handleUxThemeChange(item.name)}
+                  />
+                ))}
+                <span className="the-theme-switcher__label">
+                  {UX_THEMES.find((item) => item.name === uxTheme)?.label}
+                </span>
+              </div>
               <LayoutTraffic />
             </div>
           </div>

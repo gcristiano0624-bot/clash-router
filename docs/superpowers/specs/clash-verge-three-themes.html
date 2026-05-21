@@ -1,0 +1,812 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Clash Verge — 三主题</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  user-select: none;
+  font-size: 13px;
+  line-height: 1.5;
+  transition: background 0.25s, color 0.25s;
+}
+
+/* ═══════════════════════════ Theme: macOS ═══════════════════════════ */
+body.theme-macos {
+  --bg:        oklch(96% 0.005 260);
+  --surface:   oklch(100% 0 0);
+  --surface-raised: oklch(100% 0 0);
+  --fg:        oklch(22% 0.015 260);
+  --muted:     oklch(54% 0.012 258);
+  --border:    oklch(90% 0.006 256);
+  --accent:    oklch(54% 0.18 260);
+  --accent-hover: oklch(48% 0.18 260);
+  --accent-dim: oklch(76% 0.12 260);
+  --accent-bg: oklch(93% 0.06 260);
+  --success:   oklch(56% 0.16 145);
+  --warning:   oklch(70% 0.16 80);
+  --error:     oklch(56% 0.2 25);
+  --info:      oklch(62% 0.12 240);
+  --sidebar-bg: oklch(18% 0.015 260);
+  --sidebar-fg: oklch(70% 0.01 260);
+  --sidebar-active: oklch(95% 0.005 260);
+  --sidebar-hover: oklch(24% 0.012 260);
+  --sidebar-border: oklch(25% 0.012 258);
+  --shadow-card: 0 0.5px 1.5px rgba(0,0,0,0.04), 0 3px 10px rgba(0,0,0,0.04);
+  --shadow-raised: 0 1px 4px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.05);
+  --font: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+body.theme-macos { background: var(--bg); color: var(--fg); font-family: var(--font); }
+
+/* ═══════════════════════════ Theme: Modern Dark ═══════════════════════════ */
+body.theme-dark {
+  --bg:        oklch(14% 0.018 260);
+  --surface:   oklch(19% 0.02 260 / 0.7);
+  --surface-raised: oklch(22% 0.02 260 / 0.7);
+  --fg:        oklch(88% 0.008 260);
+  --muted:     oklch(56% 0.01 260);
+  --border:    oklch(28% 0.015 260);
+  --accent:    oklch(62% 0.25 290);
+  --accent-hover: oklch(56% 0.25 290);
+  --accent-dim: oklch(72% 0.18 290);
+  --accent-bg: oklch(22% 0.12 290);
+  --success:   oklch(56% 0.16 145);
+  --warning:   oklch(72% 0.18 80);
+  --error:     oklch(58% 0.22 25);
+  --info:      oklch(62% 0.12 240);
+  --sidebar-bg: oklch(10% 0.012 260);
+  --sidebar-fg: oklch(60% 0.01 260);
+  --sidebar-active: oklch(92% 0.005 260);
+  --sidebar-hover: oklch(16% 0.015 260);
+  --sidebar-border: oklch(22% 0.015 260);
+  --shadow-card: 0 4px 16px rgba(0,0,0,0.25);
+  --shadow-raised: 0 6px 24px rgba(0,0,0,0.35);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+body.theme-dark { background: var(--bg); color: var(--fg); font-family: var(--font); }
+
+/* ═══════════════════════════ Theme: Warm Magazine ═══════════════════════════ */
+body.theme-warm {
+  --bg:        oklch(93% 0.012 55);
+  --surface:   oklch(96% 0.015 55);
+  --surface-raised: oklch(98% 0.012 55);
+  --fg:        oklch(20% 0.04 45);
+  --muted:     oklch(52% 0.04 45);
+  --border:    oklch(86% 0.02 55);
+  --accent:    oklch(64% 0.13 28);
+  --accent-hover: oklch(58% 0.13 28);
+  --accent-dim: oklch(78% 0.1 28);
+  --accent-bg: oklch(89% 0.04 30);
+  --success:   oklch(56% 0.14 145);
+  --warning:   oklch(70% 0.16 80);
+  --error:     oklch(56% 0.2 25);
+  --info:      oklch(60% 0.1 240);
+  --sidebar-bg: oklch(18% 0.05 45);
+  --sidebar-fg: oklch(65% 0.03 45);
+  --sidebar-active: oklch(92% 0.02 45);
+  --sidebar-hover: oklch(23% 0.04 45);
+  --sidebar-border: oklch(26% 0.04 45);
+  --shadow-card: none;
+  --shadow-raised: none;
+  --font: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: 'Iowan Old Style', 'Charter', 'Newsreader', Georgia, serif;
+}
+body.theme-warm { background: var(--bg); color: var(--fg); font-family: var(--font); }
+
+/* ── Shared across themes ── */
+::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 220px; min-width: 220px;
+  background: var(--sidebar-bg);
+  display: flex; flex-direction: column;
+  transition: background 0.25s;
+}
+.sidebar-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+.sidebar-header .logo {
+  width: 26px; height: 26px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 11px; font-weight: 700;
+  color: #fff; transition: background 0.25s;
+}
+.sidebar-header .title {
+  font-size: 14px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--sidebar-active); font-family: var(--font-display);
+}
+.sidebar-header .version {
+  font-size: 10px; color: var(--sidebar-fg); font-family: var(--font); margin-left: auto;
+  opacity: 0.6;
+}
+
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; margin: 1px 8px;
+  cursor: pointer; color: var(--sidebar-fg); font-size: 13px; font-weight: 500;
+  position: relative; transition: color 0.15s, background 0.15s;
+}
+.nav-item:hover { color: var(--sidebar-active); background: var(--sidebar-hover); }
+.nav-item.active { color: var(--sidebar-active); }
+.nav-item.active::before {
+  content: ''; position: absolute; left: -8px; top: 5px; bottom: 5px;
+  width: 2px; background: var(--accent); transition: background 0.25s;
+}
+.nav-item .icon {
+  width: 18px; height: 18px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-item .icon svg { width: 16px; height: 16px; fill: currentColor; }
+
+.sidebar-footer {
+  border-top: 1px solid var(--sidebar-border);
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.theme-switcher {
+  display: flex; gap: 6px; align-items: center;
+  margin-bottom: 2px;
+}
+.theme-swatch {
+  width: 16px; height: 16px; cursor: pointer; border: 1.5px solid transparent;
+  transition: border-color 0.15s, opacity 0.15s;
+  opacity: 0.6;
+}
+.theme-swatch:hover { opacity: 1; }
+.theme-swatch.active { border-color: var(--sidebar-active); opacity: 1; }
+.theme-swatch.macos { background: oklch(54% 0.18 260); }
+.theme-swatch.dark  { background: oklch(62% 0.25 290); }
+.theme-swatch.warm  { background: oklch(64% 0.13 28); }
+.theme-label {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--sidebar-fg); margin-left: auto; opacity: 0.5;
+}
+
+.traffic-info {
+  display: flex; justify-content: space-between;
+  font-family: var(--font); font-size: 10px; color: var(--sidebar-fg);
+}
+.traffic-numbers {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px 16px;
+}
+.traffic-numbers span {
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 11px; color: var(--sidebar-active);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.25s;
+}
+.traffic-numbers .label { font-size: 9px; color: var(--sidebar-fg); }
+
+/* ── Main ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.main-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 20px; border-bottom: 1px solid var(--border);
+  min-height: 40px; background: var(--surface);
+  transition: background 0.25s, border-color 0.25s;
+}
+.main-topbar h2 {
+  font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
+  font-family: var(--font-display);
+  transition: color 0.25s;
+}
+.main-topbar .actions { display: flex; align-items: center; gap: 8px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; font-size: 12px; font-weight: 500;
+  background: var(--surface); color: var(--fg);
+  border: 1px solid var(--border); cursor: pointer;
+  font-family: var(--font);
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.btn:hover { border-color: var(--accent-dim); }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-sm { padding: 3px 8px; font-size: 11px; }
+
+.page { display: none; flex: 1; overflow: hidden; flex-direction: column; }
+.page.active { display: flex; }
+
+/* ── Dashboard ── */
+.dashboard-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  background: transparent; flex: 1; overflow: auto; padding: 2px;
+}
+.dash-card {
+  background: var(--surface); padding: 18px 22px;
+  box-shadow: var(--shadow-card);
+  transition: background 0.25s, box-shadow 0.25s;
+}
+.dash-card h3 {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted); margin-bottom: 12px; font-weight: 600;
+  font-family: var(--font-display);
+  transition: color 0.25s;
+}
+body.theme-warm .dash-card {
+  border-top: 2px solid var(--border);
+}
+.stat-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.stat-row .val {
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+body.theme-warm .stat-row .val { font-family: var(--font-display); font-weight: 700; }
+.stat-row .lbl { font-size: 12px; color: var(--muted); }
+.proxy-status-bar { display: flex; gap: 0; margin-top: 10px; }
+.proxy-status-bar > div { height: 4px; flex: 1; }
+.proxy-status-bar .ok { background: var(--success); }
+.proxy-status-bar .warn { background: var(--warning); }
+.proxy-status-bar .fail { background: var(--error); }
+.proxy-status-bar .idle { background: var(--border); }
+.conn-summary {
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 28px; font-weight: 600;
+  font-variant-numeric: tabular-nums; line-height: 1;
+  display: flex; align-items: baseline; gap: 8px;
+}
+body.theme-warm .conn-summary { font-family: var(--font-display); }
+.conn-summary .sub { font-size: 12px; font-weight: 400; color: var(--muted); transition: color 0.25s; }
+.speed-row { display: flex; gap: 24px; margin-top: 8px; }
+.speed-item { font-variant-numeric: tabular-nums; }
+.speed-item .num { font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace; font-size: 14px; font-weight: 600; }
+.speed-item .dir { font-size: 10px; color: var(--muted); display: block; margin-bottom: 2px; transition: color 0.25s; }
+
+/* ── Proxies ── */
+.proxies-layout { display: flex; flex: 1; overflow: hidden; }
+.proxies-groups {
+  width: 180px; min-width: 180px;
+  background: var(--surface); border-right: 1px solid var(--border);
+  overflow-y: auto; padding: 8px 0;
+  transition: background 0.25s, border-color 0.25s;
+}
+.proxy-group-item {
+  padding: 7px 14px; cursor: pointer; font-size: 12px;
+  color: var(--muted); margin: 0 6px;
+  border-left: 2px solid transparent;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.proxy-group-item:hover { color: var(--fg); background: var(--bg); }
+.proxy-group-item.active { color: var(--fg); background: var(--accent-bg); border-left-color: var(--accent); }
+.proxy-group-item .type-badge {
+  font-size: 9px; color: var(--muted); display: block; margin-top: 1px;
+}
+.proxies-list { flex: 1; overflow-y: auto; padding: 4px; }
+.proxy-node {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px; margin: 2px 6px;
+  cursor: pointer; font-size: 12px;
+  transition: background 0.15s;
+}
+.proxy-node:hover { background: var(--bg); }
+.proxy-node.selected { background: var(--accent-bg); }
+.proxy-node .delay {
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 10px; width: 44px; text-align: right; font-variant-numeric: tabular-nums;
+}
+.proxy-node .name { flex: 1; }
+.proxy-node .check { width: 6px; height: 6px; flex-shrink: 0; }
+.proxy-node .check.ok { background: var(--success); }
+.proxy-node .check.fail { background: var(--error); }
+.proxy-node .check.timeout { background: var(--warning); }
+
+/* ── Profiles ── */
+.profiles-list { flex: 1; overflow-y: auto; background: var(--surface); transition: background 0.25s; }
+.profile-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s, border-color 0.25s;
+}
+.profile-item:hover { background: var(--bg); }
+.profile-item.active { background: var(--accent-bg); border-left: 2px solid var(--accent); }
+.profile-item .info { flex: 1; }
+.profile-item .name { font-size: 13px; font-weight: 600; }
+.profile-item .meta { font-size: 11px; color: var(--muted); margin-top: 2px; transition: color 0.25s; }
+.profile-item .actions { display: flex; gap: 6px; }
+
+/* ── Connections ── */
+.conn-table-wrap { flex: 1; overflow: auto; background: var(--surface); transition: background 0.25s; }
+.conn-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.conn-table th {
+  text-align: left; padding: 7px 12px;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--muted); font-weight: 600;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  transition: color 0.25s, background 0.25s, border-color 0.25s;
+}
+.conn-table td {
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 11px; font-variant-numeric: tabular-nums;
+  transition: border-color 0.25s;
+}
+.conn-table tr:hover td { background: var(--bg); }
+.conn-table .host-col { font-weight: 500; font-family: var(--font); font-size: 12px; }
+.conn-table .proc-col { color: var(--muted); font-family: var(--font); }
+.conn-table .status-badge { font-size: 10px; padding: 1px 5px; }
+.conn-table .status-badge.alive { background: color-mix(in oklch, var(--success) 12%, transparent); color: var(--success); }
+.conn-table .status-badge.closed { background: color-mix(in oklch, var(--muted) 12%, transparent); color: var(--muted); }
+
+/* ── Rules ── */
+.rules-list { flex: 1; overflow-y: auto; background: var(--surface); transition: background 0.25s; }
+.rule-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 20px; border-bottom: 1px solid var(--border);
+  font-size: 12px; transition: background 0.15s, border-color 0.25s;
+}
+.rule-item:hover { background: var(--bg); }
+.rule-item .type {
+  font-size: 10px; font-weight: 600; padding: 1px 6px;
+  min-width: 52px; text-align: center;
+  background: var(--bg); color: var(--muted);
+  transition: background 0.25s, color 0.25s;
+}
+.rule-item .payload { flex: 1; font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace; font-size: 11px; }
+.rule-item .proxy { font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace; font-size: 11px; color: var(--accent); transition: color 0.25s; }
+.rule-item .hit {
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums;
+  transition: color 0.25s;
+}
+
+/* ── Logs ── */
+.logs-wrap { flex: 1; display: flex; flex-direction: column; background: var(--surface); transition: background 0.25s; }
+.logs-toolbar {
+  display: flex; align-items: center; gap: 8px; padding: 6px 12px;
+  border-bottom: 1px solid var(--border); transition: border-color 0.25s;
+}
+.log-filter { display: flex; gap: 2px; }
+.log-filter button {
+  font-size: 10px; padding: 2px 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--muted); cursor: pointer;
+  font-family: var(--font); transition: 0.1s;
+}
+.log-filter button:hover { color: var(--fg); border-color: var(--accent-dim); }
+.log-filter button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.log-search {
+  margin-left: auto;
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 3px 8px; font-size: 11px; color: var(--fg);
+  outline: none; width: 160px;
+  transition: background 0.25s, border-color 0.25s, color 0.25s;
+}
+.log-search:focus { border-color: var(--accent-dim); }
+.logs-output {
+  flex: 1; overflow-y: auto; padding: 4px 0;
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 11px; line-height: 1.6;
+  background: var(--bg); transition: background 0.25s;
+}
+.log-line { padding: 1px 14px; white-space: pre; }
+.log-line:hover { background: var(--surface); }
+.log-line .time { color: var(--muted); margin-right: 12px; }
+.log-line .level-info { color: var(--info); }
+.log-line .level-warn { color: var(--warning); }
+.log-line .level-error { color: var(--error); }
+.log-line .level-debug { color: var(--muted); }
+
+/* ── Unlock ── */
+.unlock-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 2px; flex: 1; overflow: auto; background: transparent; padding: 2px;
+}
+.unlock-card {
+  background: var(--surface); padding: 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  text-align: center; box-shadow: var(--shadow-card);
+  transition: background 0.25s, box-shadow 0.25s;
+}
+body.theme-warm .unlock-card {
+  border: 1px solid var(--border);
+}
+.unlock-card .site-icon {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700;
+}
+.unlock-card .site-name { font-size: 12px; font-weight: 600; }
+.unlock-card .site-status { font-size: 11px; }
+.unlock-card .site-status.avail { color: var(--success); }
+.unlock-card .site-status.blocked { color: var(--error); }
+.unlock-card .delay-tag {
+  font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums;
+  transition: color 0.25s;
+}
+
+/* ── Settings ── */
+.settings-wrap { flex: 1; overflow-y: auto; padding: 12px 20px; }
+.setting-group {
+  margin-bottom: 20px; background: var(--surface);
+  box-shadow: var(--shadow-card);
+  transition: background 0.25s, box-shadow 0.25s;
+}
+.setting-group h3 {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted); font-weight: 600; padding: 12px 16px 6px;
+  border-bottom: 1px solid var(--border); font-family: var(--font-display);
+  transition: color 0.25s, border-color 0.25s;
+}
+.setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 16px; border-bottom: 1px solid var(--border);
+  transition: border-color 0.25s;
+}
+.setting-row:last-child { border-bottom: none; }
+.setting-row .left .label { font-size: 13px; font-weight: 500; }
+.setting-row .left .desc { font-size: 11px; color: var(--muted); margin-top: 1px; transition: color 0.25s; }
+.setting-row .right { display: flex; align-items: center; gap: 8px; }
+.toggle {
+  width: 32px; height: 18px; border: 1px solid var(--border);
+  background: var(--bg); cursor: pointer; position: relative;
+  transition: background 0.15s, border-color 0.25s;
+}
+.toggle.on { background: var(--accent); border-color: var(--accent); }
+.toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 12px; height: 12px; background: var(--muted);
+  transition: 0.12s;
+}
+.toggle.on::after { left: 16px; background: #fff; }
+</style>
+</head>
+<body class="theme-macos">
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">CV</div>
+    <span class="title">Clash Verge</span>
+    <span class="version">v2.1</span>
+  </div>
+  <nav class="sidebar-nav" id="nav"></nav>
+  <div class="sidebar-footer">
+    <div class="theme-switcher">
+      <div class="theme-swatch macos active" onclick="setTheme('macos')" title="macOS 原生"></div>
+      <div class="theme-swatch dark" onclick="setTheme('dark')" title="深色仪表盘"></div>
+      <div class="theme-swatch warm" onclick="setTheme('warm')" title="暖色杂志"></div>
+      <span class="theme-label" id="themeLabel">macOS</span>
+    </div>
+    <div class="traffic-info">
+      <span>UP</span><span>DOWN</span>
+    </div>
+    <div class="traffic-numbers">
+      <span>↑ 1.24 MB/s</span><span>↓ 4.87 MB/s</span>
+      <span class="label">Total: 342 MB</span><span class="label">Total: 1.2 GB</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ── Main content ── -->
+<div class="main">
+  <div class="main-topbar">
+    <h2 id="pageTitle">Dashboard</h2>
+    <div class="actions" id="topActions"></div>
+  </div>
+
+  <!-- Home -->
+  <div class="page active" id="page-home">
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <h3>代理状态</h3>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-family:var(--font-display);font-size:18px;font-weight:700">127 ms</span>
+          <span style="font-size:11px;color:var(--muted);transition:color 0.25s">平均延迟</span>
+        </div>
+        <div class="proxy-status-bar">
+          <div class="ok"></div><div class="ok"></div><div class="ok"></div>
+          <div class="ok"></div><div class="ok"></div><div class="ok"></div>
+          <div class="ok"></div><div class="ok"></div><div class="warn"></div>
+          <div class="fail"></div><div class="ok"></div><div class="ok"></div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:10px">
+          <span style="font-size:11px;color:var(--muted)">● 8/10 可用</span>
+          <span style="font-size:11px;color:var(--muted)">Rule 模式</span>
+          <span style="font-size:11px;color:var(--muted)">Auto 节点</span>
+        </div>
+      </div>
+      <div class="dash-card">
+        <h3>活动连接</h3>
+        <div class="conn-summary">
+          23 <span class="sub">/ 128 活跃</span>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:10px;font-size:11px">
+          <span style="color:var(--muted)">今日新建: 1,247</span>
+          <span style="color:var(--muted)">总连接: 38.2k</span>
+        </div>
+      </div>
+      <div class="dash-card">
+        <h3>实时流量</h3>
+        <div class="speed-row">
+          <div class="speed-item"><span class="dir">↑ 上传</span><span class="num">1.24 MB/s</span></div>
+          <div class="speed-item"><span class="dir">↓ 下载</span><span class="num">4.87 MB/s</span></div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:16px;font-size:11px">
+          <span style="color:var(--muted)">今日上行: 342 MB</span>
+          <span style="color:var(--muted)">今日下行: 1.2 GB</span>
+        </div>
+      </div>
+      <div class="dash-card">
+        <h3>内存 & 进程</h3>
+        <div class="stat-row"><span class="lbl">内存占用</span><span class="val">47.2 MB</span></div>
+        <div class="stat-row"><span class="lbl">进程</span><span class="val" style="color:var(--success)">● 运行中</span></div>
+        <div class="stat-row"><span class="lbl">运行时长</span><span class="val">3d 14h 22m</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proxies -->
+  <div class="page" id="page-proxies">
+    <div class="proxies-layout">
+      <div class="proxies-groups" id="proxyGroups"></div>
+      <div class="proxies-list" id="proxyNodes"></div>
+    </div>
+  </div>
+
+  <!-- Profiles -->
+  <div class="page" id="page-profiles">
+    <div class="profiles-list">
+      <div class="profile-item active">
+        <div class="info">
+          <div class="name">config-mix.yaml</div>
+          <div class="meta">clash • 142 规则 • 24 节点 • 5 分钟前</div>
+        </div>
+        <div class="actions"><button class="btn btn-sm">更新</button><button class="btn btn-sm btn-primary">启用</button></div>
+      </div>
+      <div class="profile-item">
+        <div class="info">
+          <div class="name">hk-fast.yaml</div>
+          <div class="meta">clash • 86 规则 • 12 节点 • 2 小时前</div>
+        </div>
+        <div class="actions"><button class="btn btn-sm">更新</button><button class="btn btn-sm">启用</button></div>
+      </div>
+      <div class="profile-item">
+        <div class="info">
+          <div class="name">global-direct.yaml</div>
+          <div class="meta">clash • 32 规则 • 1 节点 • 2 天前</div>
+        </div>
+        <div class="actions"><button class="btn btn-sm">更新</button><button class="btn btn-sm">启用</button></div>
+      </div>
+      <div class="profile-item">
+        <div class="info">
+          <div class="name">streaming-optimized.yaml</div>
+          <div class="meta">clash • 98 规则 • 18 节点 • 1 小时前</div>
+        </div>
+        <div class="actions"><button class="btn btn-sm">更新</button><button class="btn btn-sm">启用</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connections -->
+  <div class="page" id="page-connections">
+    <div class="conn-table-wrap">
+      <table class="conn-table">
+        <thead><tr>
+          <th>Host</th><th>类型</th><th>进程</th><th>上行</th><th>下行</th><th>时长</th><th>状态</th><th>链</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="host-col">api.github.com:443</td><td>HTTPS</td><td class="proc-col">Code</td><td>342 KB</td><td>1.2 MB</td><td>3m 42s</td><td><span class="status-badge alive">● 活跃</span></td><td style="color:var(--accent)">🇯🇵 JP → DIRECT</td></tr>
+          <tr><td class="host-col">google.com:443</td><td>HTTPS</td><td class="proc-col">Chrome</td><td>12 KB</td><td>89 KB</td><td>12m 08s</td><td><span class="status-badge alive">● 活跃</span></td><td style="color:var(--accent)">🇭🇰 HK → DIRECT</td></tr>
+          <tr><td class="host-col">cdn.example.com:53</td><td>UDP</td><td class="proc-col">System</td><td>2 KB</td><td>8 KB</td><td>1h 24m</td><td><span class="status-badge alive">● 活跃</span></td><td style="color:var(--accent)">DIRECT</td></tr>
+          <tr><td class="host-col">api.telegram.org:443</td><td>HTTPS</td><td class="proc-col">Telegram</td><td>1.1 MB</td><td>4.5 MB</td><td>24m 10s</td><td><span class="status-badge closed">○ 已关闭</span></td><td style="color:var(--accent)">🇸🇬 SG → DIRECT</td></tr>
+          <tr><td class="host-col">notion.so:443</td><td>HTTPS</td><td class="proc-col">Notion</td><td>212 KB</td><td>847 KB</td><td>8m 33s</td><td><span class="status-badge alive">● 活跃</span></td><td style="color:var(--accent)">🇺🇸 US → DIRECT</td></tr>
+          <tr><td class="host-col">openai.com:443</td><td>HTTPS</td><td class="proc-col">Chrome</td><td>890 KB</td><td>3.2 MB</td><td>2m 14s</td><td><span class="status-badge alive">● 活跃</span></td><td style="color:var(--accent)">🇺🇸 US → DIRECT</td></tr>
+          <tr><td class="host-col">dns.quad9.net:53</td><td>UDP</td><td class="proc-col">System</td><td>128 B</td><td>512 B</td><td>47m 02s</td><td><span class="status-badge alive">● 活跃</span></td><td style="color:var(--accent)">DIRECT</td></tr>
+          <tr><td class="host-col">dns.quad9.net:53</td><td>UDP</td><td class="proc-col">System</td><td>64 B</td><td>256 B</td><td>47m 02s</td><td><span class="status-badge closed">○ 已关闭</span></td><td style="color:var(--accent)">DIRECT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div class="page" id="page-rules">
+    <div class="rules-list">
+      <div class="rule-item"><span class="type">DOMAIN</span><span class="payload">google.com</span><span class="proxy">🇺🇸 US</span><span class="hit">142 hits</span></div>
+      <div class="rule-item"><span class="type">DOMAIN-SUFFIX</span><span class="payload">.youtube.com</span><span class="proxy">🇺🇸 US</span><span class="hit">89 hits</span></div>
+      <div class="rule-item"><span class="type">DOMAIN-SUFFIX</span><span class="payload">.github.com</span><span class="proxy">🇯🇵 JP</span><span class="hit">67 hits</span></div>
+      <div class="rule-item"><span class="type">DOMAIN-KEYWORD</span><span class="payload">telegram</span><span class="proxy">🇸🇬 SG</span><span class="hit">245 hits</span></div>
+      <div class="rule-item"><span class="type">DOMAIN-SUFFIX</span><span class="payload">.openai.com</span><span class="proxy">🇺🇸 US</span><span class="hit">534 hits</span></div>
+      <div class="rule-item"><span class="type">DOMAIN-SUFFIX</span><span class="payload">.notion.so</span><span class="proxy">🇺🇸 US</span><span class="hit">32 hits</span></div>
+      <div class="rule-item"><span class="type">DOMAIN</span><span class="payload">clash.meta</span><span class="proxy">DIRECT</span><span class="hit">12 hits</span></div>
+      <div class="rule-item"><span class="type">IP-CIDR</span><span class="payload">10.0.0.0/8</span><span class="proxy">DIRECT</span><span class="hit">1,892 hits</span></div>
+      <div class="rule-item"><span class="type">IP-CIDR</span><span class="payload">172.16.0.0/12</span><span class="proxy">DIRECT</span><span class="hit">423 hits</span></div>
+      <div class="rule-item"><span class="type">IP-CIDR</span><span class="payload">192.168.0.0/16</span><span class="proxy">DIRECT</span><span class="hit">3,201 hits</span></div>
+      <div class="rule-item"><span class="type">GEOSITE</span><span class="payload">cn</span><span class="proxy">DIRECT</span><span class="hit">12,847 hits</span></div>
+      <div class="rule-item"><span class="type">GEOIP</span><span class="payload">CN</span><span class="proxy">DIRECT</span><span class="hit">8,432 hits</span></div>
+      <div class="rule-item"><span class="type">MATCH</span><span class="payload">剩余流量</span><span class="proxy">🇯🇵 JP</span><span class="hit">5,211 hits</span></div>
+    </div>
+  </div>
+
+  <!-- Logs -->
+  <div class="page" id="page-logs">
+    <div class="logs-wrap">
+      <div class="logs-toolbar">
+        <div class="log-filter">
+          <button class="active">ALL</button><button>INFO</button><button>WARN</button><button>ERROR</button><button>DEBUG</button>
+        </div>
+        <input class="log-search" placeholder="过滤..." />
+      </div>
+      <div class="logs-output">
+        <div class="log-line"><span class="time">14:23:01.482</span><span class="level-info">[INFO]</span> [TCP] 192.168.1.105:52412 → api.github.com:443 经由 🇯🇵 JP</div>
+        <div class="log-line"><span class="time">14:23:01.901</span><span class="level-info">[INFO]</span> [UDP] 192.168.1.105:53421 → dns.quad9.net:53</div>
+        <div class="log-line"><span class="time">14:23:02.113</span><span class="level-warn">[WARN]</span> 节点 🇸🇬 SG-01 延迟 312ms</div>
+        <div class="log-line"><span class="time">14:23:02.340</span><span class="level-info">[INFO]</span> [TCP] 192.168.1.105:54218 → google.com:443 经由 🇭🇰 HK</div>
+        <div class="log-line"><span class="time">14:23:02.801</span><span class="level-error">[ERROR]</span> 节点 🇺🇸 US-03 连接超时 (5000ms)</div>
+        <div class="log-line"><span class="time">14:23:03.022</span><span class="level-info">[INFO]</span> [DNS] google.com → 142.250.80.46 (缓存)</div>
+        <div class="log-line"><span class="time">14:23:03.245</span><span class="level-debug">[DEBUG]</span> 规则匹配: DOMAIN-SUFFIX,google.com → 🇭🇰 HK</div>
+        <div class="log-line"><span class="time">14:23:03.510</span><span class="level-info">[INFO]</span> [TCP] 192.168.1.105:54302 → notion.so:443 经由 🇺🇸 US</div>
+        <div class="log-line"><span class="time">14:23:04.102</span><span class="level-debug">[DEBUG]</span> GC: 47.2MB</div>
+        <div class="log-line"><span class="time">14:23:04.890</span><span class="level-warn">[WARN]</span> API 频率 142 req/s</div>
+        <div class="log-line"><span class="time">14:23:05.221</span><span class="level-info">[INFO]</span> [TCP] → openai.com:443 经由 🇺🇸 US</div>
+        <div class="log-line"><span class="time">14:23:05.623</span><span class="level-info">[INFO]</span> DNS 预解析: api.github.com, notion.so, openai.com</div>
+        <div class="log-line"><span class="time">14:23:06.001</span><span class="level-info">[INFO]</span> 延迟测试: 12/14 节点, 平均 127ms</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unlock -->
+  <div class="page" id="page-unlock">
+    <div class="unlock-grid">
+      <div class="unlock-card"><div class="site-icon" style="color:var(--success)">G</div><div class="site-name">Google</div><div class="site-status avail">✓ 可访问</div><div class="delay-tag">24 ms</div></div>
+      <div class="unlock-card"><div class="site-icon" style="color:var(--success)">Y</div><div class="site-name">YouTube</div><div class="site-status avail">✓ 可访问</div><div class="delay-tag">42 ms</div></div>
+      <div class="unlock-card"><div class="site-icon" style="color:var(--error)">N</div><div class="site-name">Netflix</div><div class="site-status blocked">✗ 不可访问</div><div class="delay-tag">—</div></div>
+      <div class="unlock-card"><div class="site-icon" style="color:var(--success)">T</div><div class="site-name">Twitter / X</div><div class="site-status avail">✓ 可访问</div><div class="delay-tag">18 ms</div></div>
+      <div class="unlock-card"><div class="site-icon" style="color:var(--success)">S</div><div class="site-name">Spotify</div><div class="site-status avail">✓ 可访问</div><div class="delay-tag">56 ms</div></div>
+      <div class="unlock-card"><div class="site-icon" style="color:var(--error)">D</div><div class="site-name">Disney+</div><div class="site-status blocked">✗ 不可访问</div><div class="delay-tag">—</div></div>
+      <div class="unlock-card"><div class="site-icon" style="color:var(--success)">C</div><div class="site-name">ChatGPT</div><div class="site-status avail">✓ 可访问</div><div class="delay-tag">34 ms</div></div>
+      <div class="unlock-card"><div class="site-icon" style="color:var(--success)">G</div><div class="site-name">GitHub</div><div class="site-status avail">✓ 可访问</div><div class="delay-tag">92 ms</div></div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="page" id="page-settings">
+    <div class="settings-wrap">
+      <div class="setting-group">
+        <h3>代理</h3>
+        <div class="setting-row"><div class="left"><div class="label">系统代理</div><div class="desc">接管系统网络流量</div></div><div class="right"><div class="toggle on" onclick="this.classList.toggle('on')"></div></div></div>
+        <div class="setting-row"><div class="left"><div class="label">TUN 模式</div><div class="desc">虚拟网卡, 接管所有流量</div></div><div class="right"><div class="toggle" onclick="this.classList.toggle('on')"></div></div></div>
+        <div class="setting-row"><div class="left"><div class="label">代理模式</div></div><div class="right"><button class="btn btn-sm btn-primary">Rule</button><button class="btn btn-sm">Global</button><button class="btn btn-sm">Direct</button></div></div>
+      </div>
+      <div class="setting-group">
+        <h3>网络</h3>
+        <div class="setting-row"><div class="left"><div class="label">HTTP 端口</div><div class="desc">本地代理监听端口</div></div><div class="right"><span style="font-family:var(--mono, ui-monospace);font-size:12px">7890</span></div></div>
+        <div class="setting-row"><div class="left"><div class="label">SOCKS5 端口</div></div><div class="right"><span style="font-family:var(--mono, ui-monospace);font-size:12px">7891</span></div></div>
+        <div class="setting-row"><div class="left"><div class="label">允许局域网连接</div></div><div class="right"><div class="toggle on" onclick="this.classList.toggle('on')"></div></div></div>
+      </div>
+      <div class="setting-group">
+        <h3>日志 & 调试</h3>
+        <div class="setting-row"><div class="left"><div class="label">日志级别</div></div><div class="right"><button class="btn btn-sm btn-primary">Info</button><button class="btn btn-sm">Warning</button><button class="btn btn-sm">Debug</button></div></div>
+        <div class="setting-row"><div class="left"><div class="label">日志保留</div></div><div class="right"><span style="font-family:var(--mono, ui-monospace);font-size:12px">1,000</span></div></div>
+      </div>
+      <div class="setting-group">
+        <h3>界面</h3>
+        <div class="setting-row"><div class="left"><div class="label">语言</div></div><div class="right"><button class="btn btn-sm btn-primary">简体中文</button><button class="btn btn-sm">English</button></div></div>
+        <div class="setting-row"><div class="left"><div class="label">主题切换</div><div class="desc">macOS 原生 / 深色 / 暖色</div></div><div class="right"><button class="btn btn-sm btn-primary" onclick="setTheme('macos')">macOS</button><button class="btn btn-sm" onclick="setTheme('dark')">深色</button><button class="btn btn-sm" onclick="setTheme('warm')">暖色</button></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const pages = [
+  { id:'home',        label:'Dashboard',   icon:'<svg viewBox="0 0 16 16"><path d="M1 9l7-7 7 7M3 7v6h3v-4h4v4h3V7"/></svg>' },
+  { id:'proxies',     label:'Proxies',      icon:'<svg viewBox="0 0 16 16"><path d="M1 3h14v2H1zm0 4h14v2H1zm0 4h10v2H1z"/><circle cx="13" cy="11" r="2"/></svg>' },
+  { id:'profiles',    label:'Profiles',     icon:'<svg viewBox="0 0 16 16"><path d="M3 1h6l3 3v10a1 1 0 01-1 1H3a1 1 0 01-1-1V2a1 1 0 011-1zm5 1v4h4"/></svg>' },
+  { id:'connections', label:'Connections',  icon:'<svg viewBox="0 0 16 16"><path d="M8 1a3 3 0 00-3 3c0 1.3.8 2.4 2 2.8V11H5v2h2v2h2v-2h2v-2H9V6.8c1.2-.4 2-1.5 2-2.8a3 3 0 00-3-3z"/></svg>' },
+  { id:'rules',       label:'Rules',        icon:'<svg viewBox="0 0 16 16"><path d="M2 3h12v1H2zm0 4h12v1H2zm0 4h8v1H2z"/></svg>' },
+  { id:'logs',        label:'Logs',         icon:'<svg viewBox="0 0 16 16"><path d="M2 3h12v1H2zm0 3h12v1H2zm0 3h12v1H2zm0 3h8v1H2z"/></svg>' },
+  { id:'unlock',      label:'Unlock',       icon:'<svg viewBox="0 0 16 16"><path d="M5 7V5a3 3 0 016 0v2h1a1 1 0 011 1v5a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1h1zm1-2a2 2 0 114 0v2H6V5z"/></svg>' },
+  { id:'settings',    label:'Settings',     icon:'<svg viewBox="0 0 16 16"><path d="M9.5 1l.5 2.3a5.5 5.5 0 011.4.8L13.5 3l1 1.7-1.8 1.4c.2.5.3 1 .3 1.6 0 .5-.1 1-.3 1.5l1.8 1.4-1 1.7-2.1-.8c-.4.4-.9.7-1.4 1L9.5 16h-2l-.5-2.3a5.5 5.5 0 01-1.4-.8l-2.1.8-1-1.7 1.8-1.4A5.1 5.1 0 014 8.5c0-.5.1-1 .3-1.5L2.5 5.7 3.5 4l2.1.8c.4-.3.9-.6 1.4-.8L7.5 1h2zM8 5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/></svg>' },
+];
+
+const pageTitles = { home:'Dashboard', proxies:'Proxies', profiles:'Profiles', connections:'Connections', rules:'Rules', logs:'Logs', unlock:'Unlock', settings:'Settings' };
+const pageActions = {
+  home:      '<button class="btn btn-sm" onclick="triggerAction()">重启核心</button><button class="btn btn-sm btn-primary">应用配置</button>',
+  proxies:   '<button class="btn btn-sm btn-primary">测试延迟</button><button class="btn btn-sm">自动选择</button>',
+  profiles:  '<button class="btn btn-sm btn-primary">导入配置</button><button class="btn btn-sm">新建</button>',
+  connections:'<button class="btn btn-sm">关闭全部</button>',
+  logs:      '<button class="btn btn-sm btn-primary" onclick="this.classList.toggle(\'btn-primary\')">自动滚动</button><button class="btn btn-sm">清空</button>',
+  unlock:    '<button class="btn btn-sm btn-primary">全部测试</button>',
+  settings:  '',
+};
+
+const nav = document.getElementById('nav');
+pages.forEach(p => {
+  const el = document.createElement('div');
+  el.className = 'nav-item' + (p.id === 'home' ? ' active' : '');
+  el.dataset.page = p.id;
+  el.innerHTML = `<div class="icon">${p.icon}</div>${p.label}`;
+  el.addEventListener('click', () => switchPage(p.id));
+  nav.appendChild(el);
+});
+
+function switchPage(id) {
+  document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(e => e.classList.remove('active'));
+  document.querySelector(`.nav-item[data-page="${id}"]`).classList.add('active');
+  document.getElementById(`page-${id}`).classList.add('active');
+  document.getElementById('pageTitle').textContent = pageTitles[id] || id;
+  document.getElementById('topActions').innerHTML = pageActions[id] || '';
+}
+switchPage('home');
+
+// Log filter toggle
+document.querySelectorAll('.log-filter button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.log-filter button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+  });
+});
+
+// Proxy groups
+const proxyGroupData = [
+  { name:'Auto', type:'auto', nodes:['🇯🇵 JP-Tokyo','🇭🇰 HK-CNI','🇸🇬 SG-Digital','🇺🇸 US-Silicon','🇯🇵 JP-Osaka','🇭🇰 HK-HKT','🇸🇬 SG-SingTel','🇺🇸 US-LA','🇯🇵 JP-Sakura','🇭🇰 HK-PCCW'] },
+  { name:'Fallback', type:'fallback', nodes:['🇭🇰 HK-CNI','🇸🇬 SG-Digital','🇺🇸 US-Silicon'] },
+  { name:'Streaming', type:'select', nodes:['🇸🇬 SG-Digital','🇯🇵 JP-Osaka','🇺🇸 US-LA'] },
+  { name:'Domestic', type:'select', nodes:['DIRECT'] },
+];
+const delays = { '🇯🇵 JP-Tokyo':42,'🇭🇰 HK-CNI':56,'🇸🇬 SG-Digital':98,'🇺🇸 US-Silicon':187,'🇯🇵 JP-Osaka':38,'🇭🇰 HK-HKT':72,'🇸🇬 SG-SingTel':112,'🇺🇸 US-LA':156,'🇯🇵 JP-Sakura':45,'🇭🇰 HK-PCCW':88 };
+const groupsEl = document.getElementById('proxyGroups');
+
+proxyGroupData.forEach((g,i) => {
+  const el = document.createElement('div');
+  el.className = 'proxy-group-item' + (i===0?' active':'');
+  el.innerHTML = `${g.name} <span class="type-badge">${g.type}</span>`;
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.proxy-group-item').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+    renderProxyNodes(i);
+  });
+  groupsEl.appendChild(el);
+});
+
+function renderProxyNodes(idx) {
+  const el = document.getElementById('proxyNodes'); el.innerHTML = '';
+  proxyGroupData[idx].nodes.forEach((n,i) => {
+    const d = delays[n] ?? null;
+    const div = document.createElement('div');
+    div.className = 'proxy-node' + (i===0?' selected':'');
+    const cls = d!==null ? (d<150?'ok':d<300?'':'timeout') : 'fail';
+    div.innerHTML = `<span class="check ${cls}"></span><span class="name">${n}</span><span class="delay">${d!==null?d+' ms':'—'}</span>`;
+    div.addEventListener('click', () => {
+      document.querySelectorAll('#proxyNodes .proxy-node').forEach(e => e.classList.remove('selected'));
+      div.classList.add('selected');
+    });
+    el.appendChild(div);
+  });
+}
+renderProxyNodes(0);
+
+// Theme switching
+function setTheme(name) {
+  document.body.className = 'theme-' + name;
+  document.querySelectorAll('.theme-swatch').forEach(s => s.classList.toggle('active', s.classList.contains(name)));
+  document.getElementById('themeLabel').textContent = { macos:'macOS', dark:'深色', warm:'暖色' }[name];
+  localStorage.setItem('cv-theme', name);
+}
+const saved = localStorage.getItem('cv-theme');
+if (saved && ['macos','dark','warm'].includes(saved)) setTheme(saved);
+
+function triggerAction() {}
+</script>
+</body>
+</html>

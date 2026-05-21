@@ -88,6 +88,7 @@ const LogPage = () => {
 
   return (
     <BasePage
+      className="ux-page-logs"
       full
       title={t('logs.page.title')}
       contentStyle={{

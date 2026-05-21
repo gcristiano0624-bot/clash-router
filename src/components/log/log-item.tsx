@@ -3,24 +3,31 @@ import type { ReactNode } from 'react'
 
 import type { SearchState } from '@/components/base'
 
-const Item = styled(Box)(({ theme: { palette, typography } }) => ({
-  padding: '8px 0',
-  margin: '0 12px',
+const Item = styled(Box)(({ theme: { palette } }) => ({
+  padding: '6px 10px',
+  margin: 0,
   lineHeight: 1.35,
-  borderBottom: `1px solid ${palette.divider}`,
-  fontSize: '0.875rem',
-  fontFamily: typography.fontFamily,
+  borderBottom: '1px solid var(--ux-border)',
+  fontSize: '0.78rem',
+  fontFamily: 'var(--ux-font-mono)',
+  background: 'var(--ux-surface)',
   userSelect: 'text',
+  '&:hover': {
+    background: 'var(--ux-accent-bg)',
+  },
   '& .time': {
     color: palette.text.secondary,
+    fontSize: 11,
   },
   '& .type': {
     display: 'inline-block',
     marginLeft: 8,
+    minWidth: 42,
     textAlign: 'center',
-    borderRadius: 2,
+    borderRadius: 0,
     textTransform: 'uppercase',
     fontWeight: '600',
+    fontSize: 11,
   },
   '& .type[data-type="error"], & .type[data-type="err"]': {
     color: palette.error.main,
@@ -34,6 +41,7 @@ const Item = styled(Box)(({ theme: { palette, typography } }) => ({
   '& .data': {
     color: palette.text.primary,
     overflowWrap: 'anywhere',
+    fontSize: 12,
   },
   '& .highlight': {
     backgroundColor: palette.mode === 'dark' ? '#ffeb3b40' : '#ffeb3b90',
