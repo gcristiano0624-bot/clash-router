@@ -1,5 +1,7 @@
 ## v2.5.1-router.1
 
+- **Mihomo(Meta) 内核升级至 v1.19.25**
+
 ### ✨ 品牌与体验
 
 - 应用统一更名为 `Clash Router`，隔离 macOS 应用身份与配置目录
