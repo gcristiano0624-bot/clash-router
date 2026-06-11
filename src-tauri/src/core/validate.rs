@@ -334,7 +334,12 @@ impl CoreConfigValidator {
         let clash_core = Config::verge().await.latest_arc().get_valid_clash_core();
         logging!(info, Type::Validate, "使用内核: {}", clash_core);
         let sidecar_path = dirs::ensure_current_exe_sibling_executable(clash_core.as_str())?;
-        logging!(info, Type::Validate, "校验使用的内核路径: {}", dirs::path_to_str(&sidecar_path)?);
+        logging!(
+            info,
+            Type::Validate,
+            "校验使用的内核路径: {}",
+            dirs::path_to_str(&sidecar_path)?
+        );
 
         let app_handle = handle::Handle::app_handle();
         let app_dir = dirs::app_home_dir()?;

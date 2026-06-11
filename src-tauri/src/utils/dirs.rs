@@ -4,9 +4,9 @@ use async_trait::async_trait;
 use clash_verge_logging::{Type, logging};
 use once_cell::sync::OnceCell;
 #[cfg(unix)]
-use std::os::unix::fs::PermissionsExt;
-#[cfg(unix)]
 use std::iter;
+#[cfg(unix)]
+use std::os::unix::fs::PermissionsExt;
 use std::{fs, path::PathBuf};
 use tauri::Manager as _;
 

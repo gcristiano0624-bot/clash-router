@@ -5,10 +5,7 @@ use crate::{
     cmd::StringifyErr as _,
     config::{ClashInfo, Config, load_dns_config as load_normalized_dns_config},
     constants,
-    core::{
-        CoreManager, handle,
-        validate::ValidationOutcome,
-    },
+    core::{CoreManager, handle, validate::ValidationOutcome},
 };
 use clash_verge_logging::{Type, logging, logging_error};
 use compact_str::CompactString;

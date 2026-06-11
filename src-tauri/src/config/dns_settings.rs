@@ -64,8 +64,14 @@ mod tests {
     #[test]
     fn normalizes_top_level_dns_and_hosts() {
         let config = Mapping::from_iter([
-            ("dns".into(), Value::Mapping(Mapping::from_iter([("enable".into(), true.into())]))),
-            ("hosts".into(), Value::Mapping(Mapping::from_iter([("localhost".into(), "127.0.0.1".into())]))),
+            (
+                "dns".into(),
+                Value::Mapping(Mapping::from_iter([("enable".into(), true.into())])),
+            ),
+            (
+                "hosts".into(),
+                Value::Mapping(Mapping::from_iter([("localhost".into(), "127.0.0.1".into())])),
+            ),
         ]);
 
         let normalized = normalize_dns_config(config).expect("normalization should succeed");
@@ -151,7 +157,10 @@ mod tests {
         );
         assert_eq!(
             config.get("hosts"),
-            Some(&Value::Mapping(Mapping::from_iter([("localhost".into(), "127.0.0.1".into())])))
+            Some(&Value::Mapping(Mapping::from_iter([(
+                "localhost".into(),
+                "127.0.0.1".into()
+            )])))
         );
     }
 }
