@@ -1,35 +1,9 @@
-src/components/proxy/use-filter-sort.ts
-  7b27b20d397f5b5d 140,143,145-151,200,202-209
-src/components/proxy/proxy-groups.tsx
-  7b27b20d397f5b5d 28,413,418-439,442,444-462,465-484
-src/components/proxy/proxy-head.tsx
-  7b27b20d397f5b5d 68,72-95,115-136
-src/components/home/current-proxy-card.tsx
-  7b27b20d397f5b5d 34,88,93-95,97,99-107,109,562,590-611,613-620,622-642,648-667,775,786,798-805,812-834,837,839-858,864-884,913,915-922
-src/components/setting/mods/misc-viewer.tsx
-  7b27b20d397f5b5d 16,382-383,389-390
-src/services/delay.ts
-  7b27b20d397f5b5d 7-31,34-37,46,136-145,147,151,180-186,189-204,210-213,219-223,225-228,236,238-258,279-375,378-380,401,404-415,418-444,446-449,451-453,455-494,496-505,507-545,550-551,553-581,628-632,655-674,678-694
 ---
 {
   "schema_version": "authorship/3.0.0",
-  "git_ai_version": "1.3.4",
+  "git_ai_version": "1.5.2",
   "base_commit_sha": "90894978b246a8dd6fc8a3dbfdd49a497540e011",
-  "prompts": {
-    "7b27b20d397f5b5d": {
-      "agent_id": {
-        "tool": "trae",
-        "id": "6a0d4fb24b5203b3d25362b3",
-        "model": "gpt-5.4__dev"
-      },
-      "human_author": "hugo0624 <gcristiano0624@gmail.com>",
-      "messages": [],
-      "total_additions": 0,
-      "total_deletions": 0,
-      "accepted_lines": 786,
-      "overriden_lines": 0
-    }
-  },
+  "prompts": {},
   "attestation_metadata": {},
   "remote_transcripts": {}
 }
