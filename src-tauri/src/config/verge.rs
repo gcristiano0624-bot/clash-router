@@ -103,6 +103,17 @@ pub struct IVerge {
     /// enable dns settings - this controls whether dns_config.yaml is applied
     pub enable_dns_settings: Option<bool>,
 
+    /// DNS upstream strategy: "udp_only" | "doh" | "auto"
+    /// - udp_only: pure UDP DNS, suitable for enterprise networks (DoH blocked)
+    /// - doh: DoH + DoT DNS, suitable for home networks
+    /// - auto: let mihomo decide
+    pub dns_upstream_strategy: Option<String>,
+
+    /// Force sidecar (user-mode) launch, bypassing clash-verge-service network isolation.
+    /// Useful for corporate VPN / enterprise networks where the service-mode helper
+    /// cannot reach external hosts.
+    pub prefer_sidecar_mode: Option<bool>,
+
     /// always use default bypass
     pub use_default_bypass: Option<bool>,
 
@@ -446,7 +457,9 @@ impl IVerge {
             enable_global_hotkey: Some(true),
             enable_auto_light_weight_mode: Some(false),
             auto_light_weight_minutes: Some(10),
-            enable_dns_settings: Some(false),
+            enable_dns_settings: Some(true),
+            dns_upstream_strategy: Some("udp_only".into()),
+            prefer_sidecar_mode: Some(false),
             home_cards: None,
             enable_external_controller: Some(false),
             ..Self::default()
@@ -552,6 +565,8 @@ impl IVerge {
         patch!(enable_auto_light_weight_mode);
         patch!(auto_light_weight_minutes);
         patch!(enable_dns_settings);
+        patch!(dns_upstream_strategy);
+        patch!(prefer_sidecar_mode);
         patch!(home_cards);
         patch!(enable_external_controller);
     }

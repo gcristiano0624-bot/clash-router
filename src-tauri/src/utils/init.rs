@@ -123,8 +123,45 @@ pub async fn delete_log() -> Result<()> {
 }
 
 /// 初始化DNS配置文件
+///
+/// 根据 `verge.dns_upstream_strategy` 字段决定默认 DNS：
+/// - `udp_only` (默认): 纯 UDP DNS，适合企业网络 (DoH 屏蔽环境)
+/// - `doh`: DoH + DoT DNS，适合家用网络
+/// - `auto` / 其他: 等同 udp_only (向后兼容)
 async fn init_dns_config() -> Result<()> {
     use serde_yaml_ng::Value;
+
+    // 根据 verge 字段选择 DNS 策略
+    let verge_arc = Config::verge().await.latest_arc();
+    let strategy = verge_arc
+        .dns_upstream_strategy
+        .clone()
+        .unwrap_or_else(|| "udp_only".into());
+    drop(verge_arc);
+
+    let (default_ns, nameservers, proxy_server_ns, fallback) = match strategy.as_str() {
+        "doh" => (
+            vec!["system", "223.6.6.6", "8.8.8.8", "2400:3200::1", "2001:4860:4860::8888"],
+            vec![
+                "8.8.8.8",
+                "https://doh.pub/dns-query",
+                "https://dns.alidns.com/dns-query",
+            ],
+            vec![
+                "https://doh.pub/dns-query",
+                "https://dns.alidns.com/dns-query",
+                "tls://223.5.5.5",
+            ],
+            vec!["1.1.1.1", "https://cloudflare-dns.com/dns-query"],
+        ),
+        _ => (
+            // udp_only / auto / 其它: 纯 UDP, 适合企业网络
+            vec!["223.5.5.5", "119.29.29.29", "8.8.8.8"],
+            vec!["223.5.5.5", "119.29.29.29", "8.8.8.8"],
+            vec!["223.5.5.5", "119.29.29.29", "8.8.8.8"],
+            vec!["1.1.1.1", "9.9.9.9", "208.67.222.222"],
+        ),
+    };
 
     // 创建DNS子配置
     let dns_config = serde_yaml_ng::Mapping::from_iter([
@@ -149,38 +186,33 @@ async fn init_dns_config() -> Result<()> {
                 Value::String("localhost.ptlogin2.qq.com".into()),
                 Value::String("*.msftncsi.com".into()),
                 Value::String("www.msftconnecttest.com".into()),
+                // 排除公司内网域名（避免内网 DNS 被 mihomo 接管）
+                Value::String("*.bytedance.net".into()),
+                Value::String("*.byted.org".into()),
+                Value::String("*.bytedance.com".into()),
+                Value::String("*.volces.com".into()),
+                Value::String("*.volcengine.com".into()),
             ]),
         ),
         (
             "default-nameserver".into(),
-            Value::Sequence(vec![
-                Value::String("system".into()),
-                Value::String("223.6.6.6".into()),
-                Value::String("8.8.8.8".into()),
-                Value::String("2400:3200::1".into()),
-                Value::String("2001:4860:4860::8888".into()),
-            ]),
+            Value::Sequence(default_ns.into_iter().map(|s| Value::String(s.into())).collect()),
         ),
         (
             "nameserver".into(),
-            Value::Sequence(vec![
-                Value::String("8.8.8.8".into()),
-                Value::String("https://doh.pub/dns-query".into()),
-                Value::String("https://dns.alidns.com/dns-query".into()),
-            ]),
+            Value::Sequence(nameservers.into_iter().map(|s| Value::String(s.into())).collect()),
         ),
-        ("fallback".into(), Value::Sequence(vec![])),
+        (
+            "fallback".into(),
+            Value::Sequence(fallback.into_iter().map(|s| Value::String(s.into())).collect()),
+        ),
         (
             "nameserver-policy".into(),
             Value::Mapping(serde_yaml_ng::Mapping::new()),
         ),
         (
             "proxy-server-nameserver".into(),
-            Value::Sequence(vec![
-                Value::String("https://doh.pub/dns-query".into()),
-                Value::String("https://dns.alidns.com/dns-query".into()),
-                Value::String("tls://223.5.5.5".into()),
-            ]),
+            Value::Sequence(proxy_server_ns.into_iter().map(|s| Value::String(s.into())).collect()),
         ),
         ("direct-nameserver".into(), Value::Sequence(vec![])),
         ("direct-nameserver-follow-policy".into(), Value::Bool(false)),
@@ -219,8 +251,48 @@ async fn init_dns_config() -> Result<()> {
     let dns_path = app_dir.join(constants::files::DNS_CONFIG);
 
     if !dns_path.exists() {
-        logging!(info, Type::Setup, "Creating default DNS config file");
+        logging!(
+            info,
+            Type::Setup,
+            "Creating default DNS config file (strategy={})",
+            strategy
+        );
         help::save_yaml(&dns_path, &default_dns_config, Some("# Clash Router DNS Config")).await?;
+    } else {
+        // Migration: 升级用户已有 dns_config.yaml 时，检测其是否含 DoH 配置
+        // (公司网络下 DoH 服务器被屏蔽,会导致 mihomo DNS 解析全失败)
+        match fs::read_to_string(&dns_path).await {
+            Ok(content)
+                if content.contains("doh.pub")
+                    || content.contains("dns.alidns.com")
+                    || content.contains("cloudflare-dns.com") =>
+            {
+                logging!(
+                    warn,
+                    Type::Setup,
+                    "Existing dns_config.yaml uses DoH upstream, which is blocked in \
+                     many corporate networks. To switch to udp_only DNS, delete \
+                     {} and restart, or set dns_upstream_strategy: doh in verge.yaml \
+                     and manually edit dns_config.yaml.",
+                    dns_path.display()
+                );
+            }
+            Ok(_) => {
+                logging!(
+                    debug,
+                    Type::Setup,
+                    "Existing dns_config.yaml found, keeping user config"
+                );
+            }
+            Err(err) => {
+                logging!(
+                    warn,
+                    Type::Setup,
+                    "Failed to read existing dns_config.yaml for migration check: {}",
+                    err
+                );
+            }
+        }
     }
 
     Ok(())
