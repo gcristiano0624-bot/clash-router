@@ -1,0 +1,2 @@
+740bea67ad712e7e8fb63e24b8118b0aa8485ad420ec15117aed5096bfa167b4  Clash Router_2.5.1-router.2_aarch64.dmg
+265a844400782e5d6457befeb64731617b59b3f67dd34c3066a205f84132e123  Clash Router.app.tar.gz
