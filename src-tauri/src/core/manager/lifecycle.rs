@@ -86,11 +86,24 @@ impl CoreManager {
         #[cfg(target_os = "windows")]
         self.wait_for_service_if_needed().await;
 
+        let verge_arc = Config::verge().await.latest_arc();
+        let prefer_sidecar = verge_arc.prefer_sidecar_mode.unwrap_or(false);
+        drop(verge_arc);
+
         let value = SERVICE_MANAGER.lock().await.current();
         let mode = match value {
-            ServiceStatus::Ready => RunningMode::Service,
+            ServiceStatus::Ready if !prefer_sidecar => RunningMode::Service,
             _ => RunningMode::Sidecar,
         };
+
+        logging!(
+            info,
+            Type::Core,
+            "prepare_startup: service_status={:?}, prefer_sidecar={}, running_mode={:?}",
+            value,
+            prefer_sidecar,
+            mode
+        );
 
         self.set_running_mode(mode);
         Ok(())

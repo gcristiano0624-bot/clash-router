@@ -1,5 +1,7 @@
 use serde_yaml_ng::{Mapping, Value};
 
+use crate::config::Config;
+
 #[cfg(target_os = "macos")]
 use crate::process::AsyncHandler;
 
@@ -21,7 +23,7 @@ macro_rules! append {
     };
 }
 
-pub fn use_tun(mut config: Mapping, enable: bool) -> Mapping {
+pub async fn use_tun(mut config: Mapping, enable: bool) -> Mapping {
     let tun_key = Value::from("tun");
     let tun_val = config.get(&tun_key);
     let mut tun_val = tun_val.map_or_else(Mapping::new, |val| {
@@ -59,9 +61,23 @@ pub fn use_tun(mut config: Mapping, enable: bool) -> Mapping {
 
             #[cfg(target_os = "macos")]
             {
+                // Pick system-DNS server based on verge.dns_upstream_strategy.
+                // udp_only (default) -> 223.5.5.5 (Alidns, reachable in enterprise networks)
+                // doh / other       -> 114.114.114.114 (legacy default, home networks)
+                let strategy = Config::verge()
+                    .await
+                    .latest_arc()
+                    .dns_upstream_strategy
+                    .clone()
+                    .unwrap_or_else(|| "udp_only".into());
+                let dns_server = if strategy == "udp_only" {
+                    "223.5.5.5".to_string()
+                } else {
+                    "114.114.114.114".to_string()
+                };
                 AsyncHandler::spawn(move || async move {
                     crate::utils::resolve::dns::restore_public_dns().await;
-                    crate::utils::resolve::dns::set_public_dns("114.114.114.114".to_string()).await;
+                    crate::utils::resolve::dns::set_public_dns(dns_server).await;
                 });
             }
         }

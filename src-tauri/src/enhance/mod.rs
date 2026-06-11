@@ -13,13 +13,20 @@ use self::{
     seq::{SeqMap, use_seq},
     tun::use_tun,
 };
-use crate::{config::Config, utils::tmpl};
 use crate::config::{IVerge, apply_dns_config, load_dns_config};
+use crate::{config::Config, utils::tmpl};
 use anyhow::{Context as _, Result};
 use clash_verge_logging::{Type, logging};
 use serde_yaml_ng::{Mapping, Value};
 use smartstring::alias::String;
 use std::collections::{HashMap, HashSet};
+
+const AI_SELECT_GOOGLE_RULES: [&str; 4] = [
+    "DOMAIN-SUFFIX,c.gle,AI-SELECT",
+    "DOMAIN-SUFFIX,g.co,AI-SELECT",
+    "DOMAIN-SUFFIX,gvt3.com,AI-SELECT",
+    "DOMAIN-SUFFIX,1e100.net,AI-SELECT",
+];
 
 type ResultLog = Vec<(String, String)>;
 #[derive(Debug)]
@@ -545,6 +552,59 @@ fn cleanup_proxy_groups(mut config: Mapping) -> Mapping {
     config
 }
 
+fn patch_ai_select_google_rules(mut config: Mapping) -> Mapping {
+    let has_ai_select = config
+        .get("proxy-groups")
+        .and_then(Value::as_sequence)
+        .map(|groups| {
+            groups.iter().any(|group| {
+                group
+                    .as_mapping()
+                    .and_then(|map| map.get("name"))
+                    .and_then(Value::as_str)
+                    == Some("AI-SELECT")
+            })
+        })
+        .unwrap_or(false);
+
+    if !has_ai_select {
+        return config;
+    }
+
+    let Some(Value::Sequence(rules)) = config.get_mut("rules") else {
+        return config;
+    };
+
+    let existing = rules.iter().filter_map(Value::as_str).collect::<HashSet<_>>();
+
+    let insert_at = rules
+        .iter()
+        .position(|rule| rule.as_str() == Some("MATCH,DIRECT"))
+        .unwrap_or(rules.len());
+
+    let missing_rules = AI_SELECT_GOOGLE_RULES
+        .iter()
+        .filter(|rule| !existing.contains(**rule))
+        .map(|rule| Value::String((*rule).into()))
+        .collect::<Vec<_>>();
+
+    if missing_rules.is_empty() {
+        return config;
+    }
+
+    for (offset, rule) in missing_rules.into_iter().enumerate() {
+        rules.insert(insert_at + offset, rule);
+    }
+
+    logging!(
+        info,
+        Type::Core,
+        "patched missing Google-family AI-SELECT rules before MATCH,DIRECT"
+    );
+
+    config
+}
+
 async fn apply_dns_settings(mut config: Mapping, enable_dns_settings: bool) -> Result<Mapping> {
     if enable_dns_settings {
         let normalized = load_dns_config().await?;
@@ -625,8 +685,9 @@ pub async fn enhance() -> Result<(Mapping, HashSet<String>, HashMap<String, Resu
     let mut config = apply_builtin_scripts(config, clash_core, enable_builtin).await;
 
     config = cleanup_proxy_groups(config);
+    config = patch_ai_select_google_rules(config);
 
-    config = use_tun(config, enable_tun);
+    config = use_tun(config, enable_tun).await;
     config = use_sort(config);
 
     // dns settings
@@ -641,7 +702,7 @@ pub async fn enhance() -> Result<(Mapping, HashSet<String>, HashMap<String, Resu
 #[allow(clippy::expect_used)]
 #[cfg(test)]
 mod tests {
-    use super::cleanup_proxy_groups;
+    use super::{cleanup_proxy_groups, patch_ai_select_google_rules};
 
     #[test]
     fn remove_missing_proxies_from_groups() {
@@ -753,6 +814,69 @@ proxy-groups:
         assert_eq!(proxies.len(), 2);
         assert!(proxies.iter().any(|p| p.as_str() == Some("dynamic-node")));
         assert!(proxies.iter().any(|p| p.as_str() == Some("DIRECT")));
+    }
+
+    #[test]
+    fn patch_google_rules_before_match_direct() {
+        let config_str = r#"
+proxy-groups:
+  - name: "AI-SELECT"
+    type: select
+    proxies:
+      - "node-a"
+rules:
+  - DOMAIN-SUFFIX,google.com,AI-SELECT
+  - MATCH,DIRECT
+"#;
+
+        let mut config: serde_yaml_ng::Mapping =
+            serde_yaml_ng::from_str(config_str).expect("Failed to parse test yaml");
+        config = patch_ai_select_google_rules(config);
+
+        let rules = config
+            .get("rules")
+            .and_then(|v| v.as_sequence())
+            .cloned()
+            .expect("rules should be a sequence");
+
+        let as_strings = rules
+            .iter()
+            .filter_map(serde_yaml_ng::Value::as_str)
+            .collect::<Vec<_>>();
+
+        let match_index = as_strings
+            .iter()
+            .position(|rule| *rule == "MATCH,DIRECT")
+            .expect("MATCH,DIRECT should exist");
+
+        assert!(as_strings[..match_index].contains(&"DOMAIN-SUFFIX,c.gle,AI-SELECT"));
+        assert!(as_strings[..match_index].contains(&"DOMAIN-SUFFIX,gvt3.com,AI-SELECT"));
+    }
+
+    #[test]
+    fn skip_google_rule_patch_without_ai_select_group() {
+        let config_str = r#"
+proxy-groups:
+  - name: "GLOBAL"
+    type: select
+    proxies:
+      - "node-a"
+rules:
+  - MATCH,DIRECT
+"#;
+
+        let mut config: serde_yaml_ng::Mapping =
+            serde_yaml_ng::from_str(config_str).expect("Failed to parse test yaml");
+        config = patch_ai_select_google_rules(config);
+
+        let rules = config
+            .get("rules")
+            .and_then(|v| v.as_sequence())
+            .cloned()
+            .expect("rules should be a sequence");
+
+        assert_eq!(rules.len(), 1);
+        assert_eq!(rules[0].as_str(), Some("MATCH,DIRECT"));
     }
 
     #[test]

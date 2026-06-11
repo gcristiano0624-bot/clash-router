@@ -52,6 +52,11 @@ const SettingClash = ({ onError }: Props) => {
     return verge?.enable_dns_settings ?? false
   })
 
+  // 强制 sidecar 模式开关（绕开 clash-verge-service 网络隔离问题）
+  const [preferSidecarEnabled, setPreferSidecarEnabled] = useState(() => {
+    return verge?.prefer_sidecar_mode ?? false
+  })
+
   const webRef = useRef<DialogRef>(null)
   const portRef = useRef<DialogRef>(null)
   const ctrlRef = useRef<DialogRef>(null)
@@ -87,6 +92,20 @@ const SettingClash = ({ onError }: Props) => {
       setDnsSettingsEnabled(!enable)
       showNotice.error(err)
       await patchVerge({ enable_dns_settings: !enable }).catch(() => {})
+      throw err
+    }
+  })
+
+  // 强制 sidecar 模式开关处理（用于公司 VPN / 企业网络环境）
+  const handleSidecarToggle = useLockFn(async (enable: boolean) => {
+    try {
+      setPreferSidecarEnabled(enable)
+      await patchVerge({ prefer_sidecar_mode: enable })
+      showNotice.success('重启 Clash Router 后生效')
+    } catch (err: any) {
+      setPreferSidecarEnabled(!enable)
+      showNotice.error(err)
+      await patchVerge({ prefer_sidecar_mode: !enable }).catch(() => {})
       throw err
     }
   })
@@ -139,6 +158,22 @@ const SettingClash = ({ onError }: Props) => {
           edge="end"
           checked={dnsSettingsEnabled}
           onChange={(_, checked) => handleDnsToggle(checked)}
+        />
+      </SettingItem>
+
+      <SettingItem
+        label="Force Sidecar Mode"
+        extra={
+          <TooltipIcon
+            title="强制使用用户态 mihomo 启动，绕开 clash-verge-service 的网络隔离问题。适用于公司 VPN / 企业网络环境。重启 Clash Router 后生效。"
+            sx={{ opacity: '0.7' }}
+          />
+        }
+      >
+        <Switch
+          edge="end"
+          checked={preferSidecarEnabled}
+          onChange={(_, checked) => handleSidecarToggle(checked)}
         />
       </SettingItem>
 
