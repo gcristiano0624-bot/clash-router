@@ -30,6 +30,7 @@
 - 稳定性修复：统一 DNS 配置应用路径，增加 service 失败时的 sidecar 回退
 - 兼容性修复：自动补齐 sidecar / service 可执行权限，避免 `Permission denied` 校验失败
 - 视觉升级：全局主题与核心页面切换为更扁平的路由控制台风格
+- 企业网络适配（`v2.5.1-router.2`）：默认 DNS 改为纯 UDP、新增「强制 Sidecar 模式」与「DNS 上游策略」配置项
 - 本地交付：已产出 macOS `.app`、`.dmg` 与更新归档
 
 ## 预览
@@ -47,9 +48,12 @@
 
 当前已整理的 macOS 产物也保存在仓库内：
 
-- `release-assets/clash-router-macos/Clash Router.app`
-- `release-assets/clash-router-macos/Clash Router_2.5.1_aarch64.dmg`
-- `release-assets/clash-router-macos/Clash Router.app.tar.gz`
+- `release-assets/clash-router-2.5.1-router.2-macos/Clash Router.app`
+- `release-assets/clash-router-2.5.1-router.2-macos/Clash Router_2.5.1-router.2_aarch64.dmg`
+- `release-assets/clash-router-2.5.1-router.2-macos/Clash Router.app.tar.gz`
+
+> ⚠️ 本仓库提供的 macOS 产物为 **ad-hoc 自签** 版本，没有 Apple Developer 签名与公证。
+> 首次打开时 macOS Gatekeeper 会拦截，需要在「系统设置 → 隐私与安全性」中选择「仍要打开」。
 
 支持平台：
 
@@ -63,10 +67,14 @@
 | :--- | :--- | :--- |
 | Stable | 面向日常使用的正式发布版本 | [Releases](https://github.com/gcristiano0624-bot/clash-router/releases) |
 | Router Preview | 用于验证品牌化与兼容性修复的 fork 版本 | [v2.5.1-router.1](https://github.com/gcristiano0624-bot/clash-router/releases/tag/v2.5.1-router.1) |
+| Router Stable | 企业网络适配版本，默认纯 UDP DNS + 可选 Sidecar 模式 | [v2.5.1-router.2](https://github.com/gcristiano0624-bot/clash-router/releases/tag/v2.5.1-router.2) |
 
 ## 文档
 
 - 项目总览：[docs/Project.md](./docs/Project.md)
+- Sidecar 模式使用指南：[docs/SIDE-MODE.md](./docs/SIDE-MODE.md)
+- DNS 上游策略使用指南：[docs/DNS-STRATEGY.md](./docs/DNS-STRATEGY.md)
+- 故障排查记录：[docs/debug/](./docs/debug/)
 - DNS / service 方案：[2026-05-20-clash-verge-dns-service-design.md](./docs/superpowers/specs/2026-05-20-clash-verge-dns-service-design.md)
 - 品牌与 UI 方案：[2026-05-20-clash-router-brand-design.md](./docs/superpowers/specs/2026-05-20-clash-router-brand-design.md)
 - 文档与多语言方案：[2026-05-20-clash-router-docs-i18n-design.md](./docs/superpowers/specs/2026-05-20-clash-router-docs-i18n-design.md)
@@ -80,6 +88,11 @@
 - 非 `TUN` 场景下支持 service 启动失败自动回退 sidecar
 - 自动补齐 sidecar 与 service 可执行权限，减少 macOS 首次运行故障
 - 扁平化主题、导航与核心页面视觉
+- **`v2.5.1-router.2` 新增**：
+  - 默认 DNS 改为纯 UDP（`223.5.5.5` / `119.29.29.29` / `8.8.8.8`），修复企业网络下 DoH 被屏蔽导致的 DNS 解析全失败
+  - 新增 `verge.prefer_sidecar_mode` 配置项与 Settings → Clash 中的「强制 Sidecar 模式」开关，绕开 service helper 网络隔离
+  - 新增 `verge.dns_upstream_strategy` 配置项，支持 `udp_only` / `doh` 两种上游策略
+  - 默认 `fake-ip-filter` 扩展字节内网域名（`*.bytedance.net` 等），避免内网 DNS 被 mihomo 接管
 
 ## 开发
 

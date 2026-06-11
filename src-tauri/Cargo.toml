@@ -1,6 +1,6 @@
 [package]
 name = "clash-verge"
-version = "2.5.1-router.1"
+version = "2.5.1-router.2"
 description = "Clash Router"
 authors = ["zzzgydi", "Tunglies", "wonfen", "MystiPanda"]
 license = "GPL-3.0-only"
