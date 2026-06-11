@@ -137,11 +137,18 @@ function filterProxies(
 
     return proxies.filter((p) => {
       const delay = delayManager.getDelayFix(p, groupName)
+      const status = delayManager.getDelayStatus(delay, 3000)
 
       if (delay < 0) return false
-      if (symbol === '=' && symbol2 === 'error') return delay >= 1e5
+      if (symbol === '=' && symbol2 === 'error') return delayManager.isErrorDelay(delay)
       if (symbol === '=' && symbol2 === 'timeout')
-        return delay < 1e5 && delay >= 3000
+        return status === 'timeout'
+      if (symbol === '=' && symbol2 === 'dns') return status === 'dns-error'
+      if (symbol === '=' && symbol2 === 'tls') return status === 'tls-error'
+      if (symbol === '=' && symbol2 === 'blocked')
+        return status === 'probe-blocked'
+      if (symbol === '=' && symbol2 === 'network')
+        return status === 'network-error'
       if (symbol === '=') return delay == value
       if (symbol === '<') return delay <= value
       if (symbol === '>') return delay >= value
@@ -190,9 +197,16 @@ function sortProxies(
 
   if (sortType === 1) {
     const categorizeDelay = (delay: number): [number, number] => {
+      const status = delayManager.getDelayStatus(delay, effectiveTimeout)
       if (!Number.isFinite(delay)) return [3, Number.MAX_SAFE_INTEGER]
-      if (delay > 1e5) return [4, delay]
-      if (delay === 0 || (delay >= effectiveTimeout && delay <= 1e5)) {
+      if (
+        ['dns-error', 'tls-error', 'probe-blocked', 'network-error', 'error'].includes(
+          status,
+        )
+      ) {
+        return [4, delay]
+      }
+      if (status === 'timeout') {
         return [3, delay || effectiveTimeout]
       }
       if (delay < 0) {

@@ -25,7 +25,7 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router'
-import { delayGroup, healthcheckProxyProvider } from 'tauri-plugin-mihomo-api'
+import { healthcheckProxyProvider } from 'tauri-plugin-mihomo-api'
 
 import { BaseEmpty } from '@/components/base'
 import { useProxySelection } from '@/hooks/use-proxy-selection'
@@ -410,25 +410,78 @@ export const ProxyGroups = (props: Props) => {
         })
       }
 
-      const names = proxies.filter((p) => !p!.provider).map((p) => p!.name)
+      const names = proxies.map((p) => p!.name)
       debugLog(`[ProxyGroups] 过滤后需要测试的代理数量: ${names.length}`)
 
       const url = delayManager.getUrl(groupName)
       debugLog(`[ProxyGroups] 测试URL: ${url}, 超时: ${timeout}ms`)
+      // #region debug-point F:group-delay-start
+      fetch('http://127.0.0.1:7777/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'company-network-timeout',
+          runId: 'pre-fix',
+          hypothesisId: 'F',
+          location: 'src/components/proxy/proxy-groups.tsx:419',
+          msg: '[DEBUG] group delay start',
+          data: {
+            groupName,
+            timeout,
+            url,
+            urlCandidates: delayManager.getUrlCandidates(groupName),
+            proxyCount: names.length,
+            providerCount: providers.size,
+          },
+          ts: Date.now(),
+        }),
+      }).catch(() => {})
+      // #endregion
 
       try {
-        await Promise.race([
-          delayManager.checkListDelay(names, groupName, timeout),
-          delayGroup(groupName, url, timeout).then((result) => {
-            debugLog(
-              `[ProxyGroups] getGroupProxyDelays返回结果数量:`,
-              Object.keys(result || {}).length,
-            )
-          }), // 查询group delays 将清除fixed(不关注调用结果)
-        ])
+        await delayManager.checkListDelay(names, groupName, timeout)
         debugLog(`[ProxyGroups] 延迟测试完成，组: ${groupName}`)
+        // #region debug-point G:group-delay-done
+        fetch('http://127.0.0.1:7777/event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: 'company-network-timeout',
+            runId: 'pre-fix',
+            hypothesisId: 'G',
+            location: 'src/components/proxy/proxy-groups.tsx:450',
+            msg: '[DEBUG] group delay done',
+            data: {
+              groupName,
+              timeout,
+              resolvedUrl: url,
+            },
+            ts: Date.now(),
+          }),
+        }).catch(() => {})
+        // #endregion
       } catch (error) {
         console.error(`[ProxyGroups] 延迟测试出错，组: ${groupName}`, error)
+        // #region debug-point H:group-delay-error
+        fetch('http://127.0.0.1:7777/event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: 'company-network-timeout',
+            runId: 'pre-fix',
+            hypothesisId: 'H',
+            location: 'src/components/proxy/proxy-groups.tsx:467',
+            msg: '[DEBUG] group delay error',
+            data: {
+              groupName,
+              timeout,
+              resolvedUrl: url,
+              error: error instanceof Error ? error.message : String(error),
+            },
+            ts: Date.now(),
+          }),
+        }).catch(() => {})
+        // #endregion
       } finally {
         const headState = getGroupHeadState(groupName)
         if (headState?.sortType === 1) {

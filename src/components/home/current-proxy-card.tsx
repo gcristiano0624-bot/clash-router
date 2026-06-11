@@ -31,7 +31,7 @@ import { useLockFn } from 'ahooks'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
-import { delayGroup, healthcheckProxyProvider } from 'tauri-plugin-mihomo-api'
+import { healthcheckProxyProvider } from 'tauri-plugin-mihomo-api'
 
 import { EnhancedCard } from '@/components/home/enhanced-card'
 import { useProfiles } from '@/hooks/use-profiles'
@@ -85,18 +85,28 @@ function convertDelayColor(
   }
 }
 
-function getSignalIcon(delay: number): {
+function getSignalIcon(delay: number, timeout = 10000): {
   icon: React.ReactElement
   text: string
   color: string
 } {
-  if (delay === -2)
+  const status = delayManager.getDelayStatus(delay, timeout)
+
+  if (status === 'testing')
     return { icon: <SignalNone />, text: '测试中', color: 'text.secondary' }
-  if (delay === -1)
+  if (status === 'idle')
     return { icon: <SignalNone />, text: '未测试', color: 'text.secondary' }
-  if (delay > 1e5)
+  if (status === 'dns-error')
+    return { icon: <SignalError />, text: 'DNS 失败', color: 'error.main' }
+  if (status === 'tls-error')
+    return { icon: <SignalError />, text: 'TLS 失败', color: 'error.main' }
+  if (status === 'probe-blocked')
+    return { icon: <SignalError />, text: '探测受限', color: 'error.main' }
+  if (status === 'network-error')
+    return { icon: <SignalError />, text: '网络错误', color: 'error.main' }
+  if (status === 'error')
     return { icon: <SignalError />, text: '错误', color: 'error.main' }
-  if (delay === 0 || delay >= 10000)
+  if (status === 'timeout')
     return { icon: <SignalError />, text: '超时', color: 'error.main' }
   if (delay >= 500)
     return { icon: <SignalWeak />, text: '延迟较高', color: 'error.main' }
@@ -549,7 +559,7 @@ export const CurrentProxyCard = () => {
   // 信号图标（增加非空校验）
   const signalInfo =
     currentProxy && state.selection.group
-      ? getSignalIcon(currentDelay)
+      ? getSignalIcon(currentDelay, latestTimeoutRef.current || 10000)
       : { icon: <SignalNone />, text: '未初始化', color: 'text.secondary' }
 
   const checkCurrentProxyDelay = useCallback(async () => {
@@ -577,16 +587,84 @@ export const CurrentProxyCard = () => {
       debugLog(
         `[CurrentProxyCard] 自动检测当前节点延迟，组: ${groupName}, 节点: ${proxyName}`,
       )
+      // #region debug-point I:auto-current-delay-start
+      fetch('http://127.0.0.1:7777/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'company-network-timeout',
+          runId: 'pre-fix',
+          hypothesisId: 'I',
+          location: 'src/components/home/current-proxy-card.tsx:591',
+          msg: '[DEBUG] auto current proxy delay start',
+          data: {
+            groupName,
+            proxyName,
+            timeout,
+            provider: proxyRecord.provider || null,
+            isDirectMode,
+            isGlobalMode,
+          },
+          ts: Date.now(),
+        }),
+      }).catch(() => {})
+      // #endregion
       if (proxyRecord.provider) {
-        await healthcheckProxyProvider(proxyRecord.provider)
-      } else {
-        await delayManager.checkDelay(proxyName, groupName, timeout)
+        healthcheckProxyProvider(proxyRecord.provider)
+          .then(() => debugLog(`[CurrentProxyCard] 当前节点提供者健康检查完成`))
+          .catch((error) => {
+            console.warn(
+              `[CurrentProxyCard] 当前节点提供者健康检查失败，不影响fallback测速`,
+              error,
+            )
+          })
       }
+      await delayManager.checkDelay(proxyName, groupName, timeout)
+      // #region debug-point J:auto-current-delay-done
+      fetch('http://127.0.0.1:7777/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'company-network-timeout',
+          runId: 'pre-fix',
+          hypothesisId: 'J',
+          location: 'src/components/home/current-proxy-card.tsx:616',
+          msg: '[DEBUG] auto current proxy delay done',
+          data: {
+            groupName,
+            proxyName,
+            timeout,
+            latestDelay: delayManager.getDelay(proxyName, groupName),
+          },
+          ts: Date.now(),
+        }),
+      }).catch(() => {})
+      // #endregion
     } catch (error) {
       console.error(
         `[CurrentProxyCard] 自动检测当前节点延迟失败，组: ${groupName}, 节点: ${proxyName}`,
         error,
       )
+      // #region debug-point K:auto-current-delay-error
+      fetch('http://127.0.0.1:7777/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'company-network-timeout',
+          runId: 'pre-fix',
+          hypothesisId: 'K',
+          location: 'src/components/home/current-proxy-card.tsx:633',
+          msg: '[DEBUG] auto current proxy delay error',
+          data: {
+            groupName,
+            proxyName,
+            timeout,
+            error: error instanceof Error ? error.message : String(error),
+          },
+          ts: Date.now(),
+        }),
+      }).catch(() => {})
+      // #endregion
     } finally {
       autoCheckInProgressRef.current = false
       refreshProxy()
@@ -693,9 +771,8 @@ export const CurrentProxyCard = () => {
         const proxy = state.proxyData.records[name]
         if (proxy?.provider) {
           providers.add(proxy.provider)
-        } else {
-          proxyNames.push(name)
         }
+        proxyNames.push(name)
       })
     } else {
       // 规则模式
@@ -705,9 +782,8 @@ export const CurrentProxyCard = () => {
           const proxy = state.proxyData.records[name]
           if (proxy?.provider) {
             providers.add(proxy.provider)
-          } else {
-            proxyNames.push(name)
           }
+          proxyNames.push(name)
         })
       }
     }
@@ -719,27 +795,93 @@ export const CurrentProxyCard = () => {
     // 测试提供者的节点
     if (providers.size > 0) {
       debugLog(`[CurrentProxyCard] 开始测试提供者节点`)
-      await Promise.allSettled(
-        [...providers].map((p) => healthcheckProxyProvider(p)),
-      )
+      Promise.allSettled([...providers].map((p) => healthcheckProxyProvider(p)))
+        .then(() => debugLog(`[CurrentProxyCard] 提供者健康检查完成`))
+        .catch((error) => {
+          console.warn(
+            `[CurrentProxyCard] 提供者健康检查失败，不影响fallback批量测速`,
+            error,
+          )
+        })
     }
 
     // 测试非提供者的节点
     if (proxyNames.length > 0) {
       const url = delayManager.getUrl(groupName)
       debugLog(`[CurrentProxyCard] 测试URL: ${url}, 超时: ${timeout}ms`)
+      // #region debug-point L:card-delay-start
+      fetch('http://127.0.0.1:7777/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'company-network-timeout',
+          runId: 'pre-fix',
+          hypothesisId: 'L',
+          location: 'src/components/home/current-proxy-card.tsx:781',
+          msg: '[DEBUG] current proxy card delay start',
+          data: {
+            groupName,
+            timeout,
+            url,
+            urlCandidates: delayManager.getUrlCandidates(groupName),
+            proxyCount: proxyNames.length,
+            providerCount: providers.size,
+            selectedProxy: state.selection.proxy,
+          },
+          ts: Date.now(),
+        }),
+      }).catch(() => {})
+      // #endregion
 
       try {
-        await Promise.race([
-          delayManager.checkListDelay(proxyNames, groupName, timeout),
-          delayGroup(groupName, url, timeout),
-        ])
+        await delayManager.checkListDelay(proxyNames, groupName, timeout)
         debugLog(`[CurrentProxyCard] 延迟测试完成，组: ${groupName}`)
+        // #region debug-point M:card-delay-done
+        fetch('http://127.0.0.1:7777/event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: 'company-network-timeout',
+            runId: 'pre-fix',
+            hypothesisId: 'M',
+            location: 'src/components/home/current-proxy-card.tsx:804',
+            msg: '[DEBUG] current proxy card delay done',
+            data: {
+              groupName,
+              timeout,
+              resolvedUrl: url,
+              selectedProxy: state.selection.proxy,
+            },
+            ts: Date.now(),
+          }),
+        }).catch(() => {})
+        // #endregion
       } catch (error) {
         console.error(
           `[CurrentProxyCard] 延迟测试出错，组: ${groupName}`,
           error,
         )
+        // #region debug-point N:card-delay-error
+        fetch('http://127.0.0.1:7777/event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: 'company-network-timeout',
+            runId: 'pre-fix',
+            hypothesisId: 'N',
+            location: 'src/components/home/current-proxy-card.tsx:821',
+            msg: '[DEBUG] current proxy card delay error',
+            data: {
+              groupName,
+              timeout,
+              resolvedUrl: url,
+              selectedProxy: state.selection.proxy,
+              error: error instanceof Error ? error.message : String(error),
+            },
+            ts: Date.now(),
+          }),
+        }).catch(() => {})
+        // #endregion
       }
     }
 
@@ -768,9 +910,16 @@ export const CurrentProxyCard = () => {
             : 10000
 
         const categorizeDelay = (delay: number): [number, number] => {
+          const status = delayManager.getDelayStatus(delay, effectiveTimeout)
           if (!Number.isFinite(delay)) return [5, Number.MAX_SAFE_INTEGER]
-          if (delay > 1e5) return [4, delay]
-          if (delay === 0 || (delay >= effectiveTimeout && delay <= 1e5)) {
+          if (
+            ['dns-error', 'tls-error', 'probe-blocked', 'network-error', 'error'].includes(
+              status,
+            )
+          ) {
+            return [4, delay]
+          }
+          if (status === 'timeout') {
             return [3, delay || effectiveTimeout]
           }
           if (delay < 0) return [5, Number.MAX_SAFE_INTEGER]

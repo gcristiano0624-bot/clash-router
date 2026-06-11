@@ -65,12 +65,34 @@ export const ProxyHead = ({
   }, [])
 
   const { verge } = useVerge()
-  const defaultLatencyUrl =
-    verge?.default_latency_test?.trim() ||
-    'http://cp.cloudflare.com/generate_204'
+  const defaultLatencyUrl = verge?.default_latency_test?.trim() || ''
 
   useEffect(() => {
     delayManager.setUrl(groupName, testUrl?.trim() || url || defaultLatencyUrl)
+    // #region debug-point C:delay-url-source
+    fetch('http://127.0.0.1:7777/event', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: 'company-network-timeout',
+        runId: 'pre-fix',
+        hypothesisId: 'C',
+        location: 'src/components/proxy/proxy-head.tsx:74',
+        msg: '[DEBUG] proxy group delay url resolved',
+        data: {
+          groupName,
+          groupTestUrl: testUrl?.trim() || null,
+          runtimeUrl: url || null,
+          defaultLatencyUrl,
+          resolvedUrl: testUrl?.trim() || url || defaultLatencyUrl,
+          defaultLatencyTimeout: verge?.default_latency_timeout || 10000,
+          enableSystemProxy: verge?.enable_system_proxy ?? null,
+          enableTunMode: verge?.enable_tun_mode ?? null,
+        },
+        ts: Date.now(),
+      }),
+    }).catch(() => {})
+    // #endregion
   }, [groupName, testUrl, defaultLatencyUrl, url])
 
   return (
@@ -90,6 +112,28 @@ export const ProxyHead = ({
         title={t('proxies.page.tooltips.delayCheck')}
         onClick={() => {
           debugLog(`[ProxyHead] 点击延迟测试按钮，组: ${groupName}`)
+          // #region debug-point D:delay-click
+          fetch('http://127.0.0.1:7777/event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId: 'company-network-timeout',
+              runId: 'pre-fix',
+              hypothesisId: 'D',
+              location: 'src/components/proxy/proxy-head.tsx:100',
+              msg: '[DEBUG] delay check clicked',
+              data: {
+                groupName,
+                testUrl: testUrl?.trim() || null,
+                runtimeUrl: url || null,
+                defaultLatencyUrl,
+                resolvedUrl: testUrl?.trim() || url || defaultLatencyUrl,
+                defaultLatencyTimeout: verge?.default_latency_timeout || 10000,
+              },
+              ts: Date.now(),
+            }),
+          }).catch(() => {})
+          // #endregion
           // Remind the user that it is custom test url
           if (testUrl?.trim() && textState !== 'filter') {
             debugLog(`[ProxyHead] 使用自定义测试URL: ${testUrl}`)

@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 
 import { BaseDialog, DialogRef, Switch, TooltipIcon } from '@/components/base'
 import { useVerge } from '@/hooks/use-verge'
+import { DEFAULT_LATENCY_FALLBACK_URLS } from '@/services/delay'
 import { showNotice } from '@/services/notice-service'
 
 export const MiscViewer = forwardRef<DialogRef>((props, ref) => {
@@ -378,12 +379,15 @@ export const MiscViewer = forwardRef<DialogRef>((props, ref) => {
           <TextField
             autoComplete="new-password"
             size="small"
+            multiline
+            minRows={2}
             autoCorrect="off"
             autoCapitalize="off"
             spellCheck="false"
             sx={{ width: 250, marginLeft: 'auto' }}
             value={values.defaultLatencyTest}
-            placeholder="http://cp.cloudflare.com/generate_204"
+            placeholder={DEFAULT_LATENCY_FALLBACK_URLS.join('\n')}
+            helperText="支持多个测速地址，按换行或逗号分隔；留空时自动使用内置 fallback"
             onChange={(e) =>
               setValues((v) => ({ ...v, defaultLatencyTest: e.target.value }))
             }
