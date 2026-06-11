@@ -1,0 +1,31 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "3f72b3822a181f8cb4ec74b0087de506026a559c",
+  "prompts": {
+    "7b27b20d397f5b5d": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6a0d4fb24b5203b3d25362b3",
+        "model": "gpt-5.4__dev"
+      },
+      "human_author": "hugo0624 <gcristiano0624@gmail.com>",
+      "messages": [],
+      "total_additions": 930,
+      "total_deletions": 98,
+      "accepted_lines": 919,
+      "overriden_lines": 6
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {
+    "7b27b20d397f5b5d": {
+      "tool": "trae",
+      "conversation_id": "6a0d4fb24b5203b3d25362b3",
+      "session_id": "6a0d4fb24b5203b3d25362b3",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    }
+  }
+}
