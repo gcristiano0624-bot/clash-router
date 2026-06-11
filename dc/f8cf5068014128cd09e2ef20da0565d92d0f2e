@@ -1,0 +1,25 @@
+src-tauri/src/enhance/mod.rs
+  7b27b20d397f5b5d 24-30,555-607,688,690,705,819-881
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "dcf8cf5068014128cd09e2ef20da0565d92d0f2e",
+  "prompts": {
+    "7b27b20d397f5b5d": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6a0d4fb24b5203b3d25362b3",
+        "model": "gpt-5.4__dev"
+      },
+      "human_author": "hugo0624 <gcristiano0624@gmail.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 906,
+      "overriden_lines": 0
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
