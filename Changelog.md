@@ -1,5 +1,7 @@
 ## v2.5.1-router.2
 
+- **Mihomo(Meta) 内核升级至 v1.19.30**
+
 ### 🆕 新增功能
 
 - **强制 Sidecar 模式** (`verge.prefer_sidecar_mode`)：新增 verge 配置项，启用后 Clash Router 直接以用户态 mihomo 启动，绕开 `clash-verge-service` helper 在企业网络下的网络隔离问题。Settings → Clash 中提供对应 UI 开关
